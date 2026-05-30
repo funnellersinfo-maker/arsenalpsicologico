@@ -87,7 +87,10 @@
   }
 }
 
-/* Cosmic experience custom styles */
+/* ══════════════════════════════════════ */
+/* EL UMBRAL — CINEMATIC EXPERIENCE CSS  */
+/* ══════════════════════════════════════ */
+
 @layer utilities {
   .font-display {
     font-family: "Playfair Display", serif;
@@ -100,22 +103,22 @@
   }
 }
 
-/* Custom scrollbar */
+/* ── Custom Scrollbar ── */
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 2px;
 }
 ::-webkit-scrollbar-track {
   background: #050505;
 }
 ::-webkit-scrollbar-thumb {
-  background: #ffc30044;
+  background: #ffc30033;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ffc30088;
+  background: #ffc30055;
 }
 
-/* Golden glow effects */
+/* ── Golden Glow Effects ── */
 .golden-glow {
   text-shadow: 0 0 20px #ffc30066, 0 0 40px #ffc30033, 0 0 80px #ffc30011;
 }
@@ -123,19 +126,19 @@
   text-shadow: 0 0 10px #ffc300aa, 0 0 30px #ffc30066, 0 0 60px #ffc30033, 0 0 100px #ffc30011;
 }
 
-/* Scanline effect */
+/* ── Scanline Effect ── */
 .scanlines {
   background: repeating-linear-gradient(
     0deg,
     transparent,
     transparent 2px,
-    rgba(255, 195, 0, 0.015) 2px,
-    rgba(255, 195, 0, 0.015) 4px
+    rgba(255, 195, 0, 0.012) 2px,
+    rgba(255, 195, 0, 0.012) 4px
   );
   pointer-events: none;
 }
 
-/* Holographic shimmer */
+/* ── Holographic Shimmer ── */
 @keyframes holoShimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -144,166 +147,128 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 195, 0, 0.08) 25%,
-    rgba(255, 216, 77, 0.12) 50%,
-    rgba(255, 195, 0, 0.08) 75%,
+    rgba(255, 195, 0, 0.06) 25%,
+    rgba(255, 216, 77, 0.1) 50%,
+    rgba(255, 195, 0, 0.06) 75%,
     transparent 100%
   );
   background-size: 200% 100%;
   animation: holoShimmer 3s ease-in-out infinite;
 }
 
-/* Pulse animation */
+/* ── Core Animations ── */
 @keyframes goldenPulse {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.02); }
-}
-.golden-pulse {
-  animation: goldenPulse 3s ease-in-out infinite;
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.015); }
 }
 
-/* Nebula float */
-@keyframes nebulaFloat {
-  0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
-  50% { transform: translateY(-20px) scale(1.05); opacity: 0.5; }
-}
-.nebula-float {
-  animation: nebulaFloat 8s ease-in-out infinite;
-}
-
-/* Achievement unlock flash */
-@keyframes achievementFlash {
-  0% { opacity: 0; transform: scale(0.8); filter: brightness(3); }
-  30% { opacity: 1; transform: scale(1.05); filter: brightness(1.5); }
-  100% { opacity: 1; transform: scale(1); filter: brightness(1); }
-}
-.achievement-unlock {
-  animation: achievementFlash 0.8s ease-out forwards;
-}
-
-/* Singularity spin */
 @keyframes singularitySpin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Energy field */
-@keyframes energyField {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.6; }
-}
-
-/* Scroll indicator bounce */
-@keyframes scrollBounce {
-  0%, 100% { transform: translateY(0); opacity: 0.4; }
-  50% { transform: translateY(8px); opacity: 0.8; }
-}
-
-/* Breathing glow */
 @keyframes breatheGlow {
-  0%, 100% { box-shadow: 0 0 20px #ffc30033, 0 0 40px #ffc30011; }
-  50% { box-shadow: 0 0 40px #ffc30066, 0 0 80px #ffc30033, 0 0 120px #ffc30011; }
+  0%, 100% {
+    box-shadow: 0 0 15px #ffc30028, 0 0 30px #ffc30011;
+  }
+  50% {
+    box-shadow: 0 0 35px #ffc30055, 0 0 70px #ffc30028, 0 0 110px #ffc30011;
+  }
 }
 
-/* Cosmic text reveal */
-@keyframes textReveal {
-  0% { clip-path: inset(0 100% 0 0); }
-  100% { clip-path: inset(0 0 0 0); }
+@keyframes entityBreathe {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 30px rgba(255,195,0,0.1));
+  }
+  50% {
+    transform: scale(1.018);
+    filter: drop-shadow(0 0 60px rgba(255,195,0,0.2));
+  }
 }
 
-/* Distortion */
-@keyframes distort {
-  0%, 100% { transform: scaleX(1); }
-  25% { transform: scaleX(1.002); }
-  75% { transform: scaleX(0.998); }
+@keyframes energyWave {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(3); opacity: 0; }
 }
 
-/* Floating relic */
-@keyframes floatRelic {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-6px) rotate(0.5deg); }
-  75% { transform: translateY(4px) rotate(-0.3deg); }
+@keyframes hudPulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.9; }
 }
 
-/* Grid background */
+@keyframes textFlicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.3; }
+  94% { opacity: 1; }
+  96% { opacity: 0.5; }
+  97% { opacity: 1; }
+}
+
+@keyframes glowBorder {
+  0%, 100% { border-color: rgba(255,195,0,0.08); }
+  50% { border-color: rgba(255,195,0,0.25); }
+}
+
 @keyframes gridMove {
   0% { background-position: 0 0; }
   100% { background-position: 40px 40px; }
 }
 
-/* ── ENHANCED PREMIUM ANIMATIONS ── */
-
-/* Deep breathing for entity */
-@keyframes entityBreathe {
-  0%, 100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 30px rgba(255,195,0,0.12));
-  }
-  50% {
-    transform: scale(1.015);
-    filter: drop-shadow(0 0 50px rgba(255,195,0,0.2));
-  }
+/* ── Cinematic Reveal Animations ── */
+@keyframes cinematicReveal {
+  0% { clip-path: inset(0 100% 0 0); opacity: 0; }
+  100% { clip-path: inset(0 0 0 0); opacity: 1; }
 }
 
-/* Energy wave expanding */
-@keyframes energyWave {
-  0% { transform: scale(0.8); opacity: 0.6; }
-  100% { transform: scale(2.5); opacity: 0; }
+@keyframes cosmicFadeIn {
+  0% { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 
-/* Slow fade in from below */
-@keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(30px); }
-  100% { opacity: 1; transform: translateY(0); }
+@keyframes signalReceive {
+  0% { opacity: 0; transform: scale(0.9); letter-spacing: 0.5em; filter: blur(8px); }
+  60% { opacity: 0.7; letter-spacing: 0.25em; filter: blur(2px); }
+  100% { opacity: 1; transform: scale(1); letter-spacing: 0.2em; filter: blur(0); }
 }
 
-/* Pulse dot for HUD indicators */
-@keyframes hudPulse {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.3); }
+@keyframes singularityPulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.08); filter: brightness(1.3); }
 }
 
-/* Subtle text flicker */
-@keyframes textFlicker {
-  0%, 100% { opacity: 1; }
-  92% { opacity: 1; }
-  93% { opacity: 0.4; }
-  94% { opacity: 1; }
-  96% { opacity: 0.6; }
-  97% { opacity: 1; }
+@keyframes driftSlow {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-8px) translateX(3px); }
+  50% { transform: translateY(-3px) translateX(-2px); }
+  75% { transform: translateY(-12px) translateX(1px); }
 }
 
-/* Data stream scroll */
-@keyframes dataStream {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-100%); }
+@keyframes scanLine {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
 }
 
-/* Glow border pulse */
-@keyframes glowBorder {
-  0%, 100% { border-color: rgba(255,195,0,0.1); }
-  50% { border-color: rgba(255,195,0,0.3); }
+@keyframes dataGlitch {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  20% { transform: translateX(-2px); opacity: 0.8; }
+  40% { transform: translateX(2px); opacity: 1; }
+  60% { transform: translateX(-1px); opacity: 0.9; }
+  80% { transform: translateX(1px); opacity: 1; }
 }
 
-/* Archive unlock glow */
-@keyframes archiveUnlock {
-  0% { box-shadow: 0 0 0 rgba(255,195,0,0); }
-  50% { box-shadow: 0 0 30px rgba(255,195,0,0.15), 0 0 60px rgba(255,195,0,0.05); }
-  100% { box-shadow: 0 0 10px rgba(255,195,0,0.05); }
-}
-
-/* Smooth section transitions */
+/* ── Scroll & Selection ── */
 html {
   scroll-behavior: smooth;
 }
 
-/* Selection color */
 ::selection {
   background: rgba(255, 195, 0, 0.2);
   color: #FFC300;
 }
 
-/* Hide scrollbar on mobile for immersion */
+/* ── Mobile Immersion ── */
 @media (max-width: 768px) {
   ::-webkit-scrollbar {
     width: 0;
@@ -314,9 +279,37 @@ html {
   }
 }
 
-/* Touch feedback */
 @media (hover: none) {
   .holo-shimmer {
     animation: none;
   }
+}
+
+/* ── Utility Classes ── */
+.text-reveal {
+  animation: cinematicReveal 1.5s ease-out forwards;
+}
+
+.cosmic-fade {
+  animation: cosmicFadeIn 2s ease-out forwards;
+}
+
+.signal-receive {
+  animation: signalReceive 1.8s ease-out forwards;
+}
+
+.singularity-pulse {
+  animation: singularityPulse 3s ease-in-out infinite;
+}
+
+.drift {
+  animation: driftSlow 12s ease-in-out infinite;
+}
+
+.scan-line {
+  animation: scanLine 4s linear infinite;
+}
+
+.data-glitch {
+  animation: dataGlitch 0.3s ease-in-out;
 }
