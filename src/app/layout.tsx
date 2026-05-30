@@ -14,23 +14,26 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "El Umbral — Descubre los Patrones Ocultos de la Mente",
+  title: "El Umbral — Observar No Es Lo Mismo Que Ver",
   description:
-    "La mayoría de las personas cree que pierde oportunidades por lo que dice. En realidad las pierde por los patrones invisibles que proyecta. Cruza el umbral.",
+    "Tu mente no ve lo que cree ver. Descubre los patrones invisibles que controlan cada conversación, decisión y relación. Cruza el umbral.",
   keywords: [
-    "psicología",
-    "percepción",
+    "psicología oscura",
     "patrones ocultos",
-    "mente humana",
+    "manipulación",
+    "percepción",
     "inteligencia social",
+    "saber leer personas",
+    "influencia",
+    "poder mental",
   ],
   icons: {
     icon: "/cosmic/singularity.png",
   },
   openGraph: {
-    title: "El Umbral — Descubre los Patrones Ocultos",
+    title: "El Umbral — Observar No Es Lo Mismo Que Ver",
     description:
-      "Cruza el umbral hacia una dimensión donde los patrones invisibles de la mente se vuelven visibles.",
+      "Tu mente no ve lo que cree ver. Descubre los patrones invisibles detrás de cada interacción humana.",
     type: "website",
   },
 };
