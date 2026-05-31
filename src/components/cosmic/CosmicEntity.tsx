@@ -107,8 +107,8 @@ export default function CosmicEntity({
 
       {/* ── MAIN IMAGE ── */}
       <img
-        src="/cosmic/guardian.webp"
-        alt="El Guardián del Umbral"
+        src="/cosmic/sabio-figure.png"
+        alt="El Sabio Oscuro — Figura Cósmica"
         loading="lazy"
         className="relative z-10 w-full h-full object-contain"
         style={{

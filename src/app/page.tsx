@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import CosmicCanvas from "@/components/cosmic/CosmicCanvas";
-
+import CosmicEntity from "@/components/cosmic/CosmicEntity";
 import GoldenSingularity from "@/components/cosmic/GoldenSingularity";
 
 /* ══════════════════════════════════════ */
@@ -394,13 +394,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
         <section className="relative min-h-[110vh] flex flex-col items-center justify-center px-6">
           <div className="h-[10vh]" />
           <motion.div style={{ y: entityY, scale: entityScale }} className="relative z-10">
-            <img
-              src="/cosmic/sabio-figure.png"
-              alt="El Sabio Oscuro — Figura Cósmica"
-              className="w-[200px] sm:w-[280px] object-contain"
-              style={{ filter: "drop-shadow(0 0 40px rgba(255,195,0,0.15)) drop-shadow(0 0 80px rgba(255,195,0,0.08))" }}
-              loading="lazy"
-            />
+            <CosmicEntity size={230} intensity={0.8 + scrollProg * 0.6} />
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 15, filter: "blur(8px)" }} whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 2.5, delay: 0.8 }} className="text-center mt-10 relative z-10 max-w-[320px]">
             <p className="font-display text-2xl sm:text-3xl font-black text-[#FFC300] golden-glow-strong">Domina la Mente Humana</p>
