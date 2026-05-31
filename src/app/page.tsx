@@ -84,6 +84,43 @@ function CountdownTimer({ compact = false }: { compact?: boolean }) {
 }
 
 /* ══════════════════════════════════════ */
+/* BACKGROUND MUSIC                       */
+/* ══════════════════════════════════════ */
+function BackgroundMusic() {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasPlayedRef = useRef(false);
+
+  useEffect(() => {
+    const playOnFirstInteraction = () => {
+      if (hasPlayedRef.current) return;
+      hasPlayedRef.current = true;
+      if (audioRef.current) {
+        audioRef.current.volume = 0.35;
+        audioRef.current.play().catch(() => {});
+      }
+      // Remove listeners after first play
+      window.removeEventListener("scroll", playOnFirstInteraction);
+      window.removeEventListener("click", playOnFirstInteraction);
+      window.removeEventListener("touchstart", playOnFirstInteraction);
+    };
+
+    window.addEventListener("scroll", playOnFirstInteraction, { passive: true });
+    window.addEventListener("click", playOnFirstInteraction, { passive: true });
+    window.addEventListener("touchstart", playOnFirstInteraction, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", playOnFirstInteraction);
+      window.removeEventListener("click", playOnFirstInteraction);
+      window.removeEventListener("touchstart", playOnFirstInteraction);
+    };
+  }, []);
+
+  return (
+    <audio ref={audioRef} src="/cosmic/bg-music.mp3" loop preload="none" />
+  );
+}
+
+/* ══════════════════════════════════════ */
 /* MAGIC SPARKLES                         */
 /* ══════════════════════════════════════ */
 function MagicSparkles() {
@@ -179,7 +216,7 @@ function StickyBar({ page }: { page: "main" | "pack" }) {
   }, []);
 
   const ctaHref = page === "main" ? CTA_BASIC : CTA_PACK;
-  const offerText = page === "main" ? "Acceso Básico $27 USD" : "15 LIBROS — Solo $57 USD";
+  const offerText = page === "main" ? "Acceso Básico $27 · 80% OFF" : "15 LIBROS — Solo $57 USD";
 
   return (
     <AnimatePresence>
@@ -294,6 +331,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
       </AnimatePresence>
 
       <CountdownTimer />
+      <BackgroundMusic />
       <CosmicCanvas />
       <div className="fixed inset-0 z-[1] scanlines pointer-events-none" />
       <div className="grain-overlay" />
@@ -343,11 +381,13 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5, delay: 5.8 }} className="mt-8">
             <CtaButton text="🔓 DESBLOQUEAR ACCESO AHORA" href={CTA_BASIC} size="lg" sameWindow />
           </motion.div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 6.2 }} className="font-mono-cosmic text-[0.3rem] tracking-[0.12em] text-[#FFC300]/30 mt-2">80% DESCUENTO · PRE-LANZAMIENTO 2026</motion.p>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 6.5 }} className="flex items-center gap-4 mt-5">
             <span className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/25 tracking-[0.12em]">📥 +2,400 copias</span>
             <span className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/25 tracking-[0.12em]">⭐ 4.8/5 valoración</span>
             <span className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/25 tracking-[0.12em]">🔒 Garantía 7 días</span>
           </motion.div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 7 }} className="font-mono-cosmic text-[0.35rem] tracking-[0.15em] text-[#FFC300]/40 font-bold mt-3">80% OFF PRE-LANZAMIENTO</motion.p>
         </section>
 
         {/* 2. GUARDIAN */}
@@ -418,7 +458,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
             <h2 className="font-display text-xl sm:text-2xl font-black text-white/70">Además del libro, recibes estos <span className="text-[#FFC300] golden-glow-strong">4 manuales de poder</span></h2>
           </motion.div>
           <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 2 }} className="mb-6 max-w-[340px]">
-            <img src="/cosmic/portadas.png" alt="El Sabio Manipulador — Libro + 4 Bonos" loading="lazy" className="w-full rounded-sm" style={{ filter: "drop-shadow(0 0 30px rgba(255,195,0,0.12))" }} />
+            <img src="/cosmic/portadas.webp" alt="El Sabio Manipulador — Libro + 4 Bonos" loading="lazy" className="w-full rounded-sm" style={{ filter: "drop-shadow(0 0 30px rgba(255,195,0,0.12))" }} />
           </motion.div>
           <div className="w-full max-w-[350px] mx-auto space-y-3">
             {[
@@ -443,7 +483,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
             ))}
           </div>
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.8 }} className="mt-5 text-center">
-            <p className="font-mono-cosmic text-[0.4rem] tracking-[0.2em] text-white/15">Total en bonos: ~$91 → Incluidos <span className="text-[#FFC300]/50 font-bold">GRATIS</span></p>
+            <p className="font-mono-cosmic text-[0.4rem] tracking-[0.2em] text-white/15">Total en bonos: ~$91 → Incluidos <span className="text-[#FFC300]/50 font-bold">GRATIS</span> · <span className="text-[#FFC300]/40 font-bold">PRE-LANZAMIENTO 2026</span></p>
           </motion.div>
         </section>
 
@@ -509,13 +549,14 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                   <div className="flex items-center justify-center gap-2 mb-1">
                     <span className="w-2 h-2 rounded-full bg-[#FFC300]/50 animate-pulse" />
                     <span className="font-mono-cosmic text-[0.45rem] tracking-[0.2em] text-[#FFC300]/40 uppercase">LOTE 1 — Acceso Básico</span>
+                    <span className="inline-block px-2 py-0.5 rounded-sm bg-gradient-to-r from-[#FFB800] to-[#FFD84D] font-mono-cosmic text-[0.4rem] tracking-[0.15em] font-bold text-[#050505]">80% OFF</span>
                   </div>
                   <h3 className="font-display text-xl font-black text-white/80">EL LIBRO + BONOS</h3>
                   <p className="font-body text-xs text-white/30 mt-1">1 LIBRO · 4 BONOS</p>
                 </div>
                 {/* Cover image */}
                 <div className="px-5 pt-4">
-                  <img src="/cosmic/pack-sabio.png" alt="El Sabio Oscuro — Libro + 4 Bonos" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.1))" }} />
+                  <img src="/cosmic/pack-sabio.webp" alt="El Sabio Oscuro — Libro + 4 Bonos" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.1))" }} />
                 </div>
                 {/* Features */}
                 <div className="py-4 px-5 space-y-2">
@@ -534,12 +575,13 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                 </div>
                 {/* Price */}
                 <div className="py-5 px-5 text-center border-t border-[#FFC300]/[0.06]">
-                  <p className="font-body text-sm text-white/20 line-through">DE US$ 201</p>
+                  <p className="font-body text-sm text-white/20 line-through">DE US$ 135</p>
                   <div className="flex items-baseline justify-center gap-1 mt-1">
                     <span className="font-body text-sm text-white/30">US$</span>
                     <span className="font-display text-5xl font-black text-[#FFC300] golden-glow-strong">27</span>
                   </div>
-                  <p className="font-mono-cosmic text-[0.35rem] tracking-[0.25em] text-white/15 mt-2">PAGO ÚNICO · ACCESO INMEDIATO</p>
+                  <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/40 mt-2 font-bold">FASE PRE-LANZAMIENTO 2026 · 80% DESCUENTO</p>
+                  <p className="font-mono-cosmic text-[0.35rem] tracking-[0.25em] text-white/15 mt-1">PAGO ÚNICO · ACCESO INMEDIATO</p>
                   <div className="mt-4">
                     <CtaButton text="QUIERO ESTE →" href={CTA_BASIC} size="lg" sameWindow />
                   </div>
@@ -574,15 +616,15 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                 <div className="px-4 pt-4 space-y-3">
                   <div>
                     <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 1 · EL SABIO OSCURO</p>
-                    <img src="/cosmic/pack-sabio.png" alt="Pack 1 — El Sabio Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
+                    <img src="/cosmic/pack-sabio.webp" alt="Pack 1 — El Sabio Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
                   </div>
                   <div>
                     <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 2 · EL DOMADOR ENCANTADOR</p>
-                    <img src="/cosmic/pack-domador.png" alt="Pack 2 — El Domador Encantador" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
+                    <img src="/cosmic/pack-domador.webp" alt="Pack 2 — El Domador Encantador" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
                   </div>
                   <div>
                     <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 3 · JAQUE MATE OSCURO</p>
-                    <img src="/cosmic/pack-jaque-mate.png" alt="Pack 3 — Jaque Mate Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
+                    <img src="/cosmic/pack-jaque-mate.webp" alt="Pack 3 — Jaque Mate Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
                   </div>
                 </div>
                 {/* Features */}
@@ -677,9 +719,10 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
             No dejes que otro día pase sin entender lo que realmente ocurre en cada conversación, decisión y relación de tu vida.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, delay: 1 }} className="mt-8 space-y-3 flex flex-col items-center">
-            <CtaButton text="🔓 DESBLOQUEAR ACCESO — $27" href={CTA_BASIC} size="lg" sameWindow />
+            <CtaButton text="🔓 DESBLOQUEAR ACCESO — $27 (80% OFF)" href={CTA_BASIC} size="lg" sameWindow />
             <CtaButton text="🔥 MEGAPACK COMPLETO — $57" onClick={onGoToPack} size="lg" />
           </motion.div>
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1, delay: 1.5 }} className="font-mono-cosmic text-[0.3rem] tracking-[0.15em] text-[#FFC300]/30 text-center mt-2">Precio pre-lanzamiento 2026 · Sube pronto</motion.p>
         </section>
 
         {/* FOOTER */}
@@ -750,7 +793,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
               <span className="font-mono-cosmic text-xs text-white/15 line-through">$128</span>
             </div>
             <div className="p-4">
-              <img src="/cosmic/pack-sabio.png" alt="Pack 1 — El Sabio Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
+              <img src="/cosmic/pack-sabio.webp" alt="Pack 1 — El Sabio Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
             </div>
             <div className="px-5 pb-4 space-y-1.5">
               {PACK1_BOOKS.map((b, i) => (
@@ -782,7 +825,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
               <span className="font-mono-cosmic text-xs text-white/15 line-through">$133</span>
             </div>
             <div className="p-4">
-              <img src="/cosmic/pack-domador.png" alt="Pack 2 — El Domador Encantador" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
+              <img src="/cosmic/pack-domador.webp" alt="Pack 2 — El Domador Encantador" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
             </div>
             <div className="px-5 pb-4 space-y-1.5">
               {PACK2_BOOKS.map((b, i) => (
@@ -814,7 +857,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
               <span className="font-mono-cosmic text-xs text-white/15 line-through">$133</span>
             </div>
             <div className="p-4">
-              <img src="/cosmic/pack-jaque-mate.png" alt="Pack 3 — Jaque Mate Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
+              <img src="/cosmic/pack-jaque-mate.webp" alt="Pack 3 — Jaque Mate Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
             </div>
             <div className="px-5 pb-4 space-y-1.5">
               {PACK3_BOOKS.map((b, i) => (

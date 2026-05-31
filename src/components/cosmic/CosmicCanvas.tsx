@@ -88,9 +88,11 @@ export default function CosmicCanvas() {
     canvas.width = width;
     canvas.height = height;
 
+    const isMobile = width < 768;
+
     // ── LAYER 1: Deep Stars ──
     const stars: Particle[] = [];
-    for (let i = 0; i < 250; i++) {
+    for (let i = 0; i < (isMobile ? 120 : 250); i++) {
       const y = Math.random() * height;
       stars.push({
         x: Math.random() * width,
@@ -108,17 +110,18 @@ export default function CosmicCanvas() {
     }
 
     // ── LAYER 2: Enhanced Nebula Clouds ──
+    const mobileNebulaScale = isMobile ? 0.7 : 1;
     const nebulas: NebulaCloud[] = [
-      { x: width * 0.2, y: height * 0.15, baseY: height * 0.15, radius: 280, r: 20, g: 32, b: 61, opacity: 0.05, phase: 0, speed: 0.002, parallaxFactor: 0.08 },
-      { x: width * 0.8, y: height * 0.4, baseY: height * 0.4, radius: 320, r: 29, g: 49, b: 96, opacity: 0.04, phase: 1.5, speed: 0.0015, parallaxFactor: 0.06 },
-      { x: width * 0.5, y: height * 0.7, baseY: height * 0.7, radius: 240, r: 38, g: 60, b: 122, opacity: 0.025, phase: 3, speed: 0.001, parallaxFactor: 0.05 },
-      { x: width * 0.15, y: height * 0.55, baseY: height * 0.55, radius: 180, r: 13, g: 24, b: 53, opacity: 0.045, phase: 4.5, speed: 0.0018, parallaxFactor: 0.07 },
-      { x: width * 0.7, y: height * 0.85, baseY: height * 0.85, radius: 200, r: 26, g: 44, b: 90, opacity: 0.03, phase: 2.2, speed: 0.0012, parallaxFactor: 0.04 },
+      { x: width * 0.2, y: height * 0.15, baseY: height * 0.15, radius: 280 * mobileNebulaScale, r: 20, g: 32, b: 61, opacity: 0.05, phase: 0, speed: 0.002, parallaxFactor: 0.08 },
+      { x: width * 0.8, y: height * 0.4, baseY: height * 0.4, radius: 320 * mobileNebulaScale, r: 29, g: 49, b: 96, opacity: 0.04, phase: 1.5, speed: 0.0015, parallaxFactor: 0.06 },
+      { x: width * 0.5, y: height * 0.7, baseY: height * 0.7, radius: 240 * mobileNebulaScale, r: 38, g: 60, b: 122, opacity: 0.025, phase: 3, speed: 0.001, parallaxFactor: 0.05 },
+      { x: width * 0.15, y: height * 0.55, baseY: height * 0.55, radius: 180 * mobileNebulaScale, r: 13, g: 24, b: 53, opacity: 0.045, phase: 4.5, speed: 0.0018, parallaxFactor: 0.07 },
+      { x: width * 0.7, y: height * 0.85, baseY: height * 0.85, radius: 200 * mobileNebulaScale, r: 26, g: 44, b: 90, opacity: 0.03, phase: 2.2, speed: 0.0012, parallaxFactor: 0.04 },
     ];
 
     // ── LAYER 3: Cosmic Dust ──
     const dust: Particle[] = [];
-    for (let i = 0; i < 55; i++) {
+    for (let i = 0; i < (isMobile ? 25 : 55); i++) {
       const y = Math.random() * height;
       dust.push({
         x: Math.random() * width,
@@ -135,7 +138,7 @@ export default function CosmicCanvas() {
 
     // ── LAYER 4: Holographic Fragments ──
     const frags: FloatingFrag[] = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < (isMobile ? 5 : 10); i++) {
       const y = Math.random() * height;
       frags.push({
         x: Math.random() * width,
@@ -153,7 +156,7 @@ export default function CosmicCanvas() {
 
     // ── LAYER 5: Shooting Stars ──
     const shootingStars: ShootingStar[] = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < (isMobile ? 2 : 3); i++) {
       shootingStars.push({
         x: 0, y: 0, vx: 0, vy: 0, length: 0,
         opacity: 0, life: 0, maxLife: 0, active: false,
@@ -178,7 +181,7 @@ export default function CosmicCanvas() {
 
     // ── LAYER 7: Golden Particles ──
     const gold: Particle[] = [];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < (isMobile ? 18 : 40); i++) {
       const y = Math.random() * height;
       gold.push({
         x: Math.random() * width,
