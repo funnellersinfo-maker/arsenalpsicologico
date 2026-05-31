@@ -418,7 +418,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
             <h2 className="font-display text-xl sm:text-2xl font-black text-white/70">Además del libro, recibes estos <span className="text-[#FFC300] golden-glow-strong">4 manuales de poder</span></h2>
           </motion.div>
           <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 2 }} className="mb-6 max-w-[340px]">
-            <img src="/cosmic/portadas.png" alt="El Sabio Manipulador — Libro + 4 Bonos" className="w-full rounded-sm" style={{ filter: "drop-shadow(0 0 30px rgba(255,195,0,0.12))" }} />
+            <img src="/cosmic/portadas.png" alt="El Sabio Manipulador — Libro + 4 Bonos" loading="lazy" className="w-full rounded-sm" style={{ filter: "drop-shadow(0 0 30px rgba(255,195,0,0.12))" }} />
           </motion.div>
           <div className="w-full max-w-[350px] mx-auto space-y-3">
             {[
@@ -515,7 +515,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                 </div>
                 {/* Cover image */}
                 <div className="px-5 pt-4">
-                  <img src="/cosmic/pack-sabio.png" alt="El Sabio Oscuro — Libro + 4 Bonos" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.1))" }} />
+                  <img src="/cosmic/pack-sabio.png" alt="El Sabio Oscuro — Libro + 4 Bonos" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.1))" }} />
                 </div>
                 {/* Features */}
                 <div className="py-4 px-5 space-y-2">
@@ -574,15 +574,15 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                 <div className="px-4 pt-4 space-y-3">
                   <div>
                     <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 1 · EL SABIO OSCURO</p>
-                    <img src="/cosmic/pack-sabio.png" alt="Pack 1 — El Sabio Oscuro" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
+                    <img src="/cosmic/pack-sabio.png" alt="Pack 1 — El Sabio Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
                   </div>
                   <div>
                     <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 2 · EL DOMADOR ENCANTADOR</p>
-                    <img src="/cosmic/pack-domador.png" alt="Pack 2 — El Domador Encantador" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
+                    <img src="/cosmic/pack-domador.png" alt="Pack 2 — El Domador Encantador" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
                   </div>
                   <div>
                     <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 3 · JAQUE MATE OSCURO</p>
-                    <img src="/cosmic/pack-jaque-mate.png" alt="Pack 3 — Jaque Mate Oscuro" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
+                    <img src="/cosmic/pack-jaque-mate.png" alt="Pack 3 — Jaque Mate Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
                   </div>
                 </div>
                 {/* Features */}
@@ -750,7 +750,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
               <span className="font-mono-cosmic text-xs text-white/15 line-through">$128</span>
             </div>
             <div className="p-4">
-              <img src="/cosmic/pack-sabio.png" alt="Pack 1 — El Sabio Oscuro" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
+              <img src="/cosmic/pack-sabio.png" alt="Pack 1 — El Sabio Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
             </div>
             <div className="px-5 pb-4 space-y-1.5">
               {PACK1_BOOKS.map((b, i) => (
@@ -782,7 +782,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
               <span className="font-mono-cosmic text-xs text-white/15 line-through">$133</span>
             </div>
             <div className="p-4">
-              <img src="/cosmic/pack-domador.png" alt="Pack 2 — El Domador Encantador" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
+              <img src="/cosmic/pack-domador.png" alt="Pack 2 — El Domador Encantador" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
             </div>
             <div className="px-5 pb-4 space-y-1.5">
               {PACK2_BOOKS.map((b, i) => (
@@ -814,7 +814,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
               <span className="font-mono-cosmic text-xs text-white/15 line-through">$133</span>
             </div>
             <div className="p-4">
-              <img src="/cosmic/pack-jaque-mate.png" alt="Pack 3 — Jaque Mate Oscuro" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
+              <img src="/cosmic/pack-jaque-mate.png" alt="Pack 3 — Jaque Mate Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
             </div>
             <div className="px-5 pb-4 space-y-1.5">
               {PACK3_BOOKS.map((b, i) => (

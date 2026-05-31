@@ -109,6 +109,7 @@ export default function CosmicEntity({
       <img
         src="/cosmic/guardian.png"
         alt="El Guardián del Umbral"
+        loading="lazy"
         className="relative z-10 w-full h-full object-contain"
         style={{
           filter: `drop-shadow(0 0 ${50 * intensity}px rgba(255,195,0,${0.15 * intensity})) drop-shadow(0 0 ${100 * intensity}px rgba(255,195,0,${0.06 * intensity}))`,
