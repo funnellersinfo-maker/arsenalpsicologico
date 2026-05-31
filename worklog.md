@@ -27,3 +27,32 @@ Stage Summary:
 - All 15 books shown across 3 packs in the combo page
 - $57 MEGAPACK card shows all 3 pack cover images with "MÁS POPULAR" badge
 - Countdown redirects to $27 checkout on expiry
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: QA Audit + Deploy to Cloudflare Pages
+
+Work Log:
+- Fixed next.config.ts: changed output from "standalone" to "export", added images.unoptimized, reactStrictMode: false
+- Removed src/app/api/route.ts (API route not needed for static export)
+- Verified no fetch('/api/...') calls or next/server imports in client code
+- Updated layout.tsx: removed Toaster import (not used), added display: "swap" to fonts, updated SEO metadata (title, description, Open Graph, Twitter cards, robots)
+- Updated build script from standalone-specific to simple "next build"
+- Added loading="lazy" to all 9 <img> elements across page.tsx and CosmicEntity.tsx
+- Build succeeded: 50 files, 5.5MB output in out/ directory, index.html 48KB
+- Created GitHub repo: funnellersinfo-maker/arsenalpsicologico
+- Pushed code to GitHub main branch
+- Created Cloudflare Pages project: arsenalpsicologico
+- Deployed 50 files to Cloudflare Pages
+- Verified live site: key content present, all images served (HTTP 200), robots.txt working
+
+Stage Summary:
+- Config: Changed to output: 'export' for Cloudflare Pages compatibility
+- APIs eliminated: src/app/api/route.ts deleted
+- Components audited: Hero ✓, Offers ✓, FAQ ✓ (7 questions, accordion), Footer ✓, WhatsApp ✓, Countdown ✓, Sticky bar ✓
+- Performance: lazy loading on all images, font display swap, 5.5MB build, 980KB JS chunks
+- SEO: Updated title (60 chars), meta description (155 chars), OG complete, Twitter cards, robots.txt, lang="es"
+- Build: Successful, 50 files, 5.5MB
+- Deploy: Successful to https://arsenalpsicologico.pages.dev
+- Verification: Live site serves all content correctly
