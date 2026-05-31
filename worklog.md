@@ -1,108 +1,29 @@
 ---
 Task ID: 1
 Agent: Main Agent
-Task: Complete radical redesign of immersive experience - MODO DIOS
+Task: Major landing page redesign with side-by-side offers, MÁS POPULAR badge, real covers, 15 books, countdown redirect
 
 Work Log:
-- Analyzed previous implementation and identified areas for improvement
-- Enhanced ParticleCanvas with 7-layer system
-- Created CosmicEntity component with living effects
-- Complete page.tsx rewrite with radical approach
-- Enhanced globals.css with new animations
-- Zero lint errors, compiles successfully
-
----
-Task ID: 2
-Agent: Main Agent
-Task: AAA-Level Cinematic Redesign
-
-Work Log:
-- Complete rewrite of CosmicCanvas with parallax system
-- Created GoldenSingularity component (5 variants)
-- Enhanced CosmicEntity (4 orbital rings, living singularity, internal energy)
-- Complete page.tsx rewrite (~70% text reduction)
-- Zero lint errors, compiles and renders successfully
-
----
-Task ID: 3
-Agent: Main Agent
-Task: Final Transformation — Anomaly Experience (eliminate all landing page feel)
-
-Work Log:
-- Text reduction: Additional ~50% cut from previous version
-  - REMOVED: "ORIGEN DESCONOCIDO", "CARGANDO SISTEMA", "LA MAYORÍA / OBSERVA", "% PERCEPCIÓN" → "%", data labels (PATRONES/SEÑALES/FREQ), "// ARCHIVO RESTRINGIDO" → just a line, "TOCA PARA DECODIFICAR", "// PATRONES: X/7", "TE ACERCAS / AL NÚCLEO" → "NÚCLEO", "PORTAL DETECTADO", "ACCESO DISPONIBLE", "PAGO ÚNICO", "7 DÍAS · DEVOLUCIÓN COMPLETA"
-  - SHORTENED: Archive titles to single words (Reciprocidad, Maquiavelismo, Seducción, Vacío, Anclaje)
-  - SHORTENED: Archive descriptions to one-line fragments
-  - SHORTENED: Achievement titles to single words (Señal, Observador, Descifrador, Arquitecto, Analista, Explorador, Guardián)
-  - SHORTENED: "EXPLORACIÓN" label removed from progress bar
-  - CHANGED: "US$ 22" → just "22" as golden access code number
-- Created THE BREACH — Central cinematic explosion scene:
-  - Phase-based state machine (5 phases with timed transitions)
-  - Phase 1: Pure black screen (0.8s)
-  - Phase 2: Singularity dot appears in center (1.2s)
-  - Phase 3: Sequential text "OBSERVAR" → "NO ES LO MISMO" → "QUE VER" with staggered blur-to-sharp reveals (3.2s)
-  - Phase 4: SINGULARITY EXPLOSION — dot scales to 4000px, golden flash overlay fills screen (0.5s)
-  - Phase 5: Fade out, return to cosmos (2s)
-  - Only triggers once (hasBreached ref)
-- Forbidden HUD messages:
-  - "SEÑAL INTERCEPTADA", "ESCANEO NO AUTORIZADO", "ANÁLISIS CLASIFICADO", "BRECHA DETECTADA", "PATRÓN 7-F", "DECODIFICACIÓN FORZADA", "FRECUENCIA ANÓMALA", "NIVEL 3", "NÚCLEO EXPUESTO", "PORTAL INESTABLE"
-- Added CSS anomaly effects:
-  - Film grain overlay (SVG noise with subtle animation)
-  - Scan sweep line (golden horizontal line sweeping down every 8s)
-  - Vignette overlay (radial gradient darkening edges)
-  - Explosion flash keyframe (flashBurst, singularityExplode)
-- Removed ALL remaining commercial elements:
-  - No "US$" currency symbol
-  - No "PAGO ÚNICO"
-  - No guarantee text
-  - No price comparison
-  - Price displayed as just "22" in golden text (feels like access code)
-- Singularity as THE brand symbol:
-  - Loader: GoldenSingularity loader variant
-  - Hero: GoldenSingularity icon variant
-  - Scroll indicator: GoldenSingularity loader (tiny)
-  - Perception meter: GoldenSingularity meter variant
-  - Archives background: Singularity glow
-  - Approach: GoldenSingularity portal variant
-  - CTA: GoldenSingularity cta variant
-- Renamed Achievement → Signal (more cryptic)
-- Renamed section "// ARCHIVO RESTRINGIDO" → just a thin golden line (no words)
-- Zero lint errors, compiles and renders successfully
+- Analyzed uploaded screenshots (PORTADAS.png, 4cxicacq.png, b4310ks1h.png, pasted_image_1780249568878.png) using VLM
+- Scraped reference Hotmart page for design inspiration
+- Copied 3 product cover images to /public/cosmic/ (pack-sabio.png, pack-domador.png, pack-jaque-mate.png)
+- Completely rewrote page.tsx with:
+  - 15-min countdown timer that redirects to $27 checkout on expiry
+  - Side-by-side offer cards (desktop) / stacked (mobile)
+  - "MÁS POPULAR" badge on $57 MEGAPACK offer
+  - Real product cover images in both offer cards
+  - 3 pack cover images displayed in $57 offer card
+  - PackPage (combo landing) with all 15 books, crossed-out prices, price summary
+  - Back button to return to main landing
+  - Sticky bottom bar on both pages with countdown + CTA
+  - WhatsApp floating button with different links per page
+  - Magic sparkles on offer cards
+  - Launch pricing notice below offers
+  - FAQ, guarantees, evidence, testimonials sections
 
 Stage Summary:
-- Complete elimination of landing page feel
-- ~85% total text reduction from original
-- THE BREACH: 5-phase cinematic explosion scene with singularity burst
-- Forbidden HUD system (intercepted signals, unauthorized access language)
-- Film grain + scan sweep + vignette = anomaly aesthetic
-- Zero commercial language — "22" feels like an access code, not a price
-- GoldenSingularity is THE brand symbol, used in 7 different contexts
-- Experience feels like discovering a forbidden digital anomaly
-- Interstellar + Apple Vision Pro + Arrival aesthetic achieved
----
-Task ID: 1
-Agent: Main
-Task: Build two-page cosmic landing with 3 packs combined, sticky bar, WhatsApp, sparkles
-
-Work Log:
-- Scraped all 3 product pages (El Sabio Oscuro, El Domador Encantador, Jaque Mate Oscuro)
-- Extracted complete product data: modules, bonuses, prices, testimonials, FAQ, guarantees
-- Rebuilt page.tsx as a state-driven two-page system (main/pack)
-- Page 1 (main): Hero, Guardian, Extracts, Arsenal, Bonuses, Evidence, Two Offer Cards ($27 basic + $57 pack), Guarantees, FAQ, Final CTA
-- Page 2 (pack): Pack Hero, Pack 1 details, Pack 2 details, Pack 3 details, Pricing Breakdown, Testimonials, Guarantees, FAQ, Final CTA
-- Added StickyBar component (appears after scrolling past first section) with countdown + CTA + offer text
-- Added WhatsAppButton component (fixed bottom-right, above sticky bar) with different links per page
-- Added MagicSparkles component for offer sections
-- CTA links: $27 → hotmart basic, $57 → hotmart pack
-- WhatsApp links: main → wa.link/pdjzt0, pack → wa.link/94fe07
-- All links open in same window (target="_self" for hotmart, _blank for whatsapp)
-- Back button on page 2 to return to main page
-- Combined pricing: $456 → $57 (87% discount)
-- Lint: 0 errors, 1 pre-existing warning
-
-Stage Summary:
-- Complete two-page cosmic landing built
-- All 3 packs with full details, 12 bonuses, detailed pricing breakdown
-- Sticky bottom bar + floating WhatsApp working on both pages
-- Magic sparkles on offer sections
-- Clean navigation between pages with scroll-to-top
+- Page compiles successfully with 0 errors (1 warning about custom fonts, pre-existing)
+- Two-page system works via state-based navigation within same component
+- All 15 books shown across 3 packs in the combo page
+- $57 MEGAPACK card shows all 3 pack cover images with "MÁS POPULAR" badge
+- Countdown redirects to $27 checkout on expiry
