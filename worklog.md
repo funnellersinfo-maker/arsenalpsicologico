@@ -56,3 +56,33 @@ Stage Summary:
 - Build: Successful, 50 files, 5.5MB
 - Deploy: Successful to https://arsenalpsicologico.pages.dev
 - Verification: Live site serves all content correctly
+
+---
+Task ID: 3
+Agent: Main Agent
+Task: 80% OFF pre-launch 2026 messaging, WebP image optimization, background music, mobile performance
+
+Work Log:
+- Added "80% OFF" badge to Offer 1 header, "80% DESCUENTO" in multiple locations
+- Updated crossed-out price from $201 to $135 (80% off = $27)
+- Added "FASE PRE-LANZAMIENTO 2026 · 80% DESCUENTO" below $27 price
+- Added "80% OFF PRE-LANZAMIENTO" in hero stats and "80% DESCUENTO · PRE-LANZAMIENTO 2026" below hero CTA
+- Updated StickyBar text to include "80% OFF"
+- Updated final CTA button to "$27 (80% OFF)" with "Precio pre-lanzamiento 2026 · Sube pronto" line
+- Updated bonos total line with "PRE-LANZAMIENTO 2026"
+- Converted all PNG images to WebP (967K→43K for pack-sabio, 444K→32K for pack-domador, etc.)
+- Removed old PNG files from public/cosmic/ (kept singularity.png for favicon)
+- Compressed background music from 11MB MP3 to 1.1MB (48kbps mono, 3min loop)
+- Added BackgroundMusic component: auto-plays on first scroll/click/touch (volume 0.35, loop), ONLY on MainPage
+- Optimized CosmicCanvas for mobile: reduced particles (stars 250→120, dust 55→25, gold 40→18, fragments 10→5, shooting stars 3→2), nebulas 30% smaller radius
+- Build reduced from 5.5MB to 3.0MB (45% smaller)
+- Git pushed and deployed to Cloudflare Pages
+- Verified live: all WebP images, audio, and 80% OFF messaging present
+
+Stage Summary:
+- 80% OFF pre-launch messaging added in 7+ locations across the page
+- Image optimization: total images went from ~4.1MB PNGs to ~448KB WebPs (89% reduction)
+- Background music plays on first interaction (main page only)
+- Mobile canvas performance improved with reduced particle counts
+- Build size: 5.5MB → 3.0MB (-45%)
+- Deployed to https://arsenalpsicologico.pages.dev
