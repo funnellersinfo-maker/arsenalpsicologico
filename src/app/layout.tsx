@@ -72,11 +72,14 @@ export default function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
+          media="print"
+          onLoad="this.media='all'"
         />
-        {/* Meta Pixel Code */}
+        {/* Meta Pixel Code — deferred for performance */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
+window.addEventListener('load',function(){
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -87,6 +90,7 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1794258984886814');
 fbq('track', 'PageView');
+});
 `,
           }}
         />
@@ -96,7 +100,7 @@ fbq('track', 'PageView');
             width="1"
             style={{ display: "none" }}
             src="https://www.facebook.com/tr?id=1794258984886814&ev=PageView&noscript=1"
-            alt=""
+            alt="Meta Pixel"
           />
         </noscript>
         {/* End Meta Pixel Code */}
