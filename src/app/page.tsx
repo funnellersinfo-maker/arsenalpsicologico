@@ -71,8 +71,8 @@ function CountdownTimer({ compact = false }: { compact?: boolean }) {
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] bg-[#0A0A0A]/95 backdrop-blur-sm border-b border-[#FFC300]/[0.06] py-2.5 px-4">
       <div className="max-w-2xl mx-auto flex items-center justify-center gap-2">
-        <span className="text-[0.5rem] sm:text-[0.6rem]">⚡</span>
-        <span className="text-[0.35rem] sm:text-[0.5rem] font-mono-cosmic tracking-[0.2em] text-[#FFC300]/50 uppercase">
+        <span className="text-[0.75rem] sm:text-[0.85rem]">⚡</span>
+        <span className="text-[0.6rem] sm:text-[0.75rem] font-mono-cosmic tracking-[0.2em] text-[#FFC300]/50 uppercase">
           OFERTA LIMITADA — Este precio desaparece en
         </span>
         <span className={`font-mono-cosmic text-sm sm:text-base font-bold ${isExpired ? "text-red-400 animate-pulse" : "text-[#FFC300] golden-glow-strong"}`}>
@@ -158,9 +158,9 @@ function CtaButton({ text, href, size = "lg", sameWindow = false, onClick }: {
   text: string; href?: string; size?: "lg" | "md" | "sm"; sameWindow?: boolean; onClick?: () => void;
 }) {
   const sizeClasses = {
-    lg: "w-full max-w-[340px] text-[0.6rem] tracking-[0.3em] px-8 py-4",
-    md: "w-full max-w-[300px] text-[0.55rem] tracking-[0.25em] px-7 py-3.5",
-    sm: "w-full max-w-[260px] text-[0.5rem] tracking-[0.2em] px-5 py-3",
+    lg: "w-full max-w-[340px] text-[0.85rem] tracking-[0.3em] px-8 py-4",
+    md: "w-full max-w-[300px] text-[0.8rem] tracking-[0.25em] px-7 py-3.5",
+    sm: "w-full max-w-[260px] text-[0.75rem] tracking-[0.2em] px-5 py-3",
   };
   const shared = `cta-btn relative z-10 block font-mono-cosmic font-bold text-center overflow-hidden rounded-sm text-[#050505] bg-gradient-to-r from-[#FFB800] via-[#FFC300] to-[#FFD84D] ${sizeClasses[size]}`;
   const style = { boxShadow: "0 0 35px rgba(255,195,0,0.12)", animation: "breatheGlow 3s ease-in-out infinite" };
@@ -202,7 +202,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 function SectionTag({ text }: { text: string }) {
-  return <p className="font-mono-cosmic text-[0.3rem] tracking-[0.3em] text-[#FFC300]/20 text-center mb-3">{text}</p>;
+  return <p className="font-mono-cosmic text-[0.55rem] tracking-[0.3em] text-[#FFC300]/20 text-center mb-3">{text}</p>;
 }
 
 /* ══════════════════════════════════════ */
@@ -227,13 +227,13 @@ function StickyBar({ page }: { page: "main" | "pack" }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <CountdownTimer compact />
-            <span className="font-mono-cosmic text-[0.35rem] tracking-[0.15em] text-white/25">|</span>
-            <span className="font-body text-[0.6rem] text-[#FFC300]/60 font-bold truncate">{offerText}</span>
+            <span className="font-mono-cosmic text-[0.6rem] tracking-[0.15em] text-white/25">|</span>
+            <span className="font-body text-[0.85rem] text-[#FFC300]/60 font-bold truncate">{offerText}</span>
           </div>
         </div>
         <a
           href={ctaHref} target="_blank" rel="noopener noreferrer"
-          className="cta-btn flex-shrink-0 font-mono-cosmic text-[0.5rem] tracking-[0.2em] font-bold px-5 py-2.5 rounded-sm bg-gradient-to-r from-[#FFB800] via-[#FFC300] to-[#FFD84D] text-[#050505]"
+          className="cta-btn flex-shrink-0 font-mono-cosmic text-[0.75rem] tracking-[0.2em] font-bold px-5 py-2.5 rounded-sm bg-gradient-to-r from-[#FFB800] via-[#FFC300] to-[#FFD84D] text-[#050505]"
           style={{ boxShadow: "0 0 20px rgba(255,195,0,0.2)" }}
         >
           {page === "main" ? "COMPRAR $27" : "COMPRAR $57"}
@@ -402,7 +402,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
           <div style={{ animation: "fadeInScale 3s ease-out 3s both" }} className="mb-4">
             <GoldenSingularity size={30} intensity={0.4} variant="icon" />
           </div>
-          <p style={{ animation: "fadeInUp 1.5s ease-out 3s both" }} className="font-mono-cosmic text-[0.3rem] tracking-[0.3em] text-[#FFC300]/15 mb-4">
+          <p style={{ animation: "fadeInUp 1.5s ease-out 3s both" }} className="font-mono-cosmic text-[0.55rem] tracking-[0.3em] text-[#FFC300]/15 mb-4">
             {"// ARCHIVO RESTRINGIDO — NIVEL DE ACCESO: ABSOLUTO"}
           </p>
           <div style={{ animation: "cosmicFadeIn 4s ease-out 3.5s both" }} className="text-center">
@@ -417,13 +417,13 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
           <div style={{ animation: "fadeInUp 1.5s ease-out 5.8s both" }} className="mt-8">
             <CtaButton text="🔓 DESBLOQUEAR ACCESO AHORA" href={CTA_BASIC} size="lg" sameWindow />
           </div>
-          <p style={{ animation: "fadeInUp 1.5s ease-out 6.2s both" }} className="font-mono-cosmic text-[0.3rem] tracking-[0.12em] text-[#FFC300]/30 mt-2">80% DESCUENTO · PRE-LANZAMIENTO 2026</p>
+          <p style={{ animation: "fadeInUp 1.5s ease-out 6.2s both" }} className="font-mono-cosmic text-[0.55rem] tracking-[0.12em] text-[#FFC300]/30 mt-2">80% DESCUENTO · PRE-LANZAMIENTO 2026</p>
           <div style={{ animation: "fadeInUp 1.5s ease-out 6.5s both" }} className="flex items-center gap-4 mt-5">
-            <span className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/25 tracking-[0.12em]">📥 +2,400 copias</span>
-            <span className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/25 tracking-[0.12em]">⭐ 4.8/5 valoración</span>
-            <span className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/25 tracking-[0.12em]">🔒 Garantía 7 días</span>
+            <span className="font-mono-cosmic text-[0.55rem] text-[#FFC300]/25 tracking-[0.12em]">📥 +2,400 copias</span>
+            <span className="font-mono-cosmic text-[0.55rem] text-[#FFC300]/25 tracking-[0.12em]">⭐ 4.8/5 valoración</span>
+            <span className="font-mono-cosmic text-[0.55rem] text-[#FFC300]/25 tracking-[0.12em]">🔒 Garantía 7 días</span>
           </div>
-          <p style={{ animation: "fadeInUp 1.5s ease-out 7s both" }} className="font-mono-cosmic text-[0.35rem] tracking-[0.15em] text-[#FFC300]/40 font-bold mt-3">80% OFF PRE-LANZAMIENTO</p>
+          <p style={{ animation: "fadeInUp 1.5s ease-out 7s both" }} className="font-mono-cosmic text-[0.6rem] tracking-[0.15em] text-[#FFC300]/40 font-bold mt-3">80% OFF PRE-LANZAMIENTO</p>
         </section>
 
         {/* 2. GUARDIAN — Transición visual */}
@@ -447,9 +447,9 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
               { quote: "La seducción no comienza con lo que dices, sino con lo que la otra persona cree que descubrió por sí misma sobre ti. El misterio calculado es tu arma más poderosa.", cap: "Cap. 6 — El Arte de la Seducción Psicológica" },
             ].map((item, i) => (
               <RevealItem key={i} delay={i * 0.25} dur={0.8} className="border-l-2 border-[#FFC300]/15 pl-4">
-                <p className="font-mono-cosmic text-[0.25rem] text-[#FFC300]/15 mb-1 tracking-[0.2em]">{"// EXTRACTO"}</p>
+                <p className="font-mono-cosmic text-[0.5rem] text-[#FFC300]/15 mb-1 tracking-[0.2em]">{"// EXTRACTO"}</p>
                 <p className="font-body text-xs text-white/40 italic leading-relaxed">&ldquo;{item.quote}&rdquo;</p>
-                <p className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/25 mt-2 tracking-[0.15em]">— {item.cap}</p>
+                <p className="font-mono-cosmic text-[0.55rem] text-[#FFC300]/25 mt-2 tracking-[0.15em]">— {item.cap}</p>
               </RevealItem>
             ))}
           </div>
@@ -499,21 +499,21 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
             ].map((item, i) => (
               <RevealItem key={i} delay={i * 0.12} dur={0.6} className="flex items-center justify-between py-3 px-3 border border-[#FFC300]/[0.04] rounded-sm bg-gradient-to-r from-[#FFC300]/[0.01] to-transparent">
                 <div className="flex items-center gap-3">
-                  <span className="font-mono-cosmic text-[0.4rem] text-[#FFC300]/30 tracking-[0.2em]">BONO {item.id}</span>
+                  <span className="font-mono-cosmic text-[0.65rem] text-[#FFC300]/30 tracking-[0.2em]">BONO {item.id}</span>
                   <div>
-                    <p className="font-display text-xs font-bold text-white/65">{item.title}</p>
-                    <p className="font-body text-[0.6rem] text-white/25">{item.subtitle}</p>
+                    <p className="font-display text-sm font-bold text-white/65">{item.title}</p>
+                    <p className="font-body text-[0.8rem] text-white/25">{item.subtitle}</p>
                   </div>
                 </div>
                 <div className="text-right flex-shrink-0 ml-2">
-                  <p className="font-mono-cosmic text-[0.35rem] text-white/15 line-through">~{item.value}</p>
-                  <p className="font-mono-cosmic text-[0.4rem] text-[#FFC300]/60 font-bold">GRATIS</p>
+                  <p className="font-mono-cosmic text-[0.6rem] text-white/15 line-through">~{item.value}</p>
+                  <p className="font-mono-cosmic text-[0.65rem] text-[#FFC300]/60 font-bold">GRATIS</p>
                 </div>
               </RevealItem>
             ))}
           </div>
           <RevealItem delay={0.8} dur={1} className="mt-5 text-center">
-            <p className="font-mono-cosmic text-[0.4rem] tracking-[0.2em] text-white/15">Total en bonos: ~$91 → Incluidos <span className="text-[#FFC300]/50 font-bold">GRATIS</span> · <span className="text-[#FFC300]/40 font-bold">PRE-LANZAMIENTO 2026</span></p>
+            <p className="font-mono-cosmic text-[0.65rem] tracking-[0.2em] text-white/15">Total en bonos: ~$91 → Incluidos <span className="text-[#FFC300]/50 font-bold">GRATIS</span> · <span className="text-[#FFC300]/40 font-bold">PRE-LANZAMIENTO 2026</span></p>
           </RevealItem>
         </section>
 
@@ -532,7 +532,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
               ].map((item, i) => (
                 <RevealItem key={i} delay={i * 0.15} dur={0.8} className="text-center">
                   <p className="font-display text-2xl sm:text-3xl font-black text-[#FFC300] golden-glow-strong">{item.value}</p>
-                  <p className="font-body text-[0.6rem] text-white/30 mt-1 tracking-wide">{item.label}</p>
+                  <p className="font-body text-[0.85rem] text-white/30 mt-1 tracking-wide">{item.label}</p>
                 </RevealItem>
               ))}
             </div>
@@ -547,7 +547,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
               ].map((item, i) => (
                 <RevealItem key={i} delay={i * 0.1} dur={0.6} className="border-l border-[#FFC300]/10 pl-4 py-2">
                   <p className="font-body text-xs text-white/35 italic leading-relaxed">&ldquo;{item.text}&rdquo;</p>
-                  <p className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/20 mt-1.5 tracking-[0.15em]">— {item.author}</p>
+                  <p className="font-mono-cosmic text-[0.55rem] text-[#FFC300]/20 mt-1.5 tracking-[0.15em]">— {item.author}</p>
                 </RevealItem>
               ))}
             </div>
@@ -577,8 +577,8 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                 <div className="py-4 px-5 text-center border-b border-[#FFC300]/[0.06]">
                   <div className="flex items-center justify-center gap-2 mb-1">
                     <span className="w-2 h-2 rounded-full bg-[#FFC300]/50 animate-pulse" />
-                    <span className="font-mono-cosmic text-[0.45rem] tracking-[0.2em] text-[#FFC300]/40 uppercase">LOTE 1 — Acceso Básico</span>
-                    <span className="inline-block px-2 py-0.5 rounded-sm bg-gradient-to-r from-[#FFB800] to-[#FFD84D] font-mono-cosmic text-[0.4rem] tracking-[0.15em] font-bold text-[#050505]">80% OFF</span>
+                    <span className="font-mono-cosmic text-[0.7rem] tracking-[0.2em] text-[#FFC300]/40 uppercase">LOTE 1 — Acceso Básico</span>
+                    <span className="inline-block px-2 py-0.5 rounded-sm bg-gradient-to-r from-[#FFB800] to-[#FFD84D] font-mono-cosmic text-[0.65rem] tracking-[0.15em] font-bold text-[#050505]">80% OFF</span>
                   </div>
                   <h3 className="font-display text-xl font-black text-white/80">EL LIBRO + BONOS</h3>
                   <p className="font-body text-xs text-white/30 mt-1">1 LIBRO · 4 BONOS</p>
@@ -598,7 +598,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                   ].map((t, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <span className="text-[#FFC300] text-xs mt-0.5 flex-shrink-0">✓</span>
-                      <p className="font-body text-[0.7rem] text-white/50">{t}</p>
+                      <p className="font-body text-[0.95rem] text-white/50">{t}</p>
                     </div>
                   ))}
                 </div>
@@ -609,8 +609,8 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                     <span className="font-body text-sm text-white/30">US$</span>
                     <span className="font-display text-5xl font-black text-[#FFC300] golden-glow-strong">27</span>
                   </div>
-                  <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/40 mt-2 font-bold">FASE PRE-LANZAMIENTO 2026 · 80% DESCUENTO</p>
-                  <p className="font-mono-cosmic text-[0.35rem] tracking-[0.25em] text-white/15 mt-1">PAGO ÚNICO · ACCESO INMEDIATO</p>
+                  <p className="font-mono-cosmic text-[0.6rem] tracking-[0.2em] text-[#FFC300]/40 mt-2 font-bold">FASE PRE-LANZAMIENTO 2026 · 80% DESCUENTO</p>
+                  <p className="font-mono-cosmic text-[0.6rem] tracking-[0.25em] text-white/15 mt-1">PAGO ÚNICO · ACCESO INMEDIATO</p>
                   <div className="mt-4">
                     <CtaButton text="QUIERO ESTE →" href={CTA_BASIC} size="lg" sameWindow />
                   </div>
@@ -628,14 +628,14 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                 {/* MÁS POPULAR Badge */}
                 <div className="absolute top-0 right-0 z-30">
                   <div className="bg-gradient-to-r from-[#FFB800] to-[#FFD84D] px-4 py-1.5 rounded-bl-lg">
-                    <span className="font-mono-cosmic text-[0.45rem] tracking-[0.15em] font-bold text-[#050505]">⭐ MÁS POPULAR</span>
+                    <span className="font-mono-cosmic text-[0.7rem] tracking-[0.15em] font-bold text-[#050505]">⭐ MÁS POPULAR</span>
                   </div>
                 </div>
                 {/* Header */}
                 <div className="py-4 px-5 text-center border-b border-[#FFC300]/[0.08]">
                   <div className="flex items-center justify-center gap-2 mb-1">
                     <span className="w-2 h-2 rounded-full bg-[#FFC300] animate-pulse" />
-                    <span className="font-mono-cosmic text-[0.45rem] tracking-[0.2em] text-[#FFC300]/60 uppercase">LOTE 2 — Acceso Total</span>
+                    <span className="font-mono-cosmic text-[0.7rem] tracking-[0.2em] text-[#FFC300]/60 uppercase">LOTE 2 — Acceso Total</span>
                   </div>
                   <h3 className="font-display text-xl font-black text-[#FFC300] golden-glow-strong">MEGAPACK COMPLETO</h3>
                   <p className="font-body text-xs text-white/30 mt-1">3 PACKS · 15 LIBROS · TODO INCLUIDO</p>
@@ -643,15 +643,15 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                 {/* 3 Pack Covers */}
                 <div className="px-4 pt-4 space-y-3">
                   <div>
-                    <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 1 · EL SABIO OSCURO</p>
+                    <p className="font-mono-cosmic text-[0.6rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 1 · EL SABIO OSCURO</p>
                     <img src="/cosmic/pack-sabio.webp" alt="Pack 1 — El Sabio Oscuro" width={400} height={500} loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
                   </div>
                   <div>
-                    <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 2 · EL DOMADOR ENCANTADOR</p>
+                    <p className="font-mono-cosmic text-[0.6rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 2 · EL DOMADOR ENCANTADOR</p>
                     <img src="/cosmic/pack-domador.webp" alt="Pack 2 — El Domador Encantador" width={400} height={500} loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
                   </div>
                   <div>
-                    <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 3 · JAQUE MATE OSCURO</p>
+                    <p className="font-mono-cosmic text-[0.6rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 3 · JAQUE MATE OSCURO</p>
                     <img src="/cosmic/pack-jaque-mate.webp" alt="Pack 3 — Jaque Mate Oscuro" width={400} height={500} loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
                   </div>
                 </div>
@@ -666,7 +666,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                   ].map((t, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <span className="text-[#FFC300] text-xs mt-0.5 flex-shrink-0">✓</span>
-                      <p className="font-body text-[0.7rem] text-white/50">{t}</p>
+                      <p className="font-body text-[0.95rem] text-white/50">{t}</p>
                     </div>
                   ))}
                 </div>
@@ -677,7 +677,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                     <span className="font-body text-sm text-white/30">US$</span>
                     <span className="font-display text-5xl font-black text-[#FFC300] golden-glow-strong">57</span>
                   </div>
-                  <p className="font-mono-cosmic text-[0.35rem] tracking-[0.25em] text-[#FFC300]/40 mt-2 font-bold">AHORRAS $627 · 92% DESCUENTO</p>
+                  <p className="font-mono-cosmic text-[0.6rem] tracking-[0.25em] text-[#FFC300]/40 mt-2 font-bold">AHORRAS $627 · 92% DESCUENTO</p>
                   <div className="mt-4">
                     <CtaButton text="🔥 VER PACK COMPLETO →" onClick={onGoToPack} size="lg" />
                   </div>
@@ -691,7 +691,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
             className="max-w-2xl mx-auto mt-6 border border-[#FFC300]/[0.08] rounded-sm p-4 text-center"
             style={{ background: "linear-gradient(135deg, rgba(255,195,0,0.02), rgba(5,5,5,0.9))" }}
           >
-            <p className="font-mono-cosmic text-[0.4rem] tracking-[0.2em] text-[#FFC300]/40">⚠ ATENCIÓN</p>
+            <p className="font-mono-cosmic text-[0.65rem] tracking-[0.2em] text-[#FFC300]/40">⚠ ATENCIÓN</p>
             <p className="font-body text-xs text-white/35 mt-1.5">Este precio es de <span className="text-[#FFC300]/60 font-bold">lanzamiento</span> y puede subir en cualquier momento sin previo aviso.</p>
           </RevealItem>
         </section>
@@ -738,7 +738,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
             ))}
           </div>
           <RevealItem delay={0.5} dur={1} className="mt-5 text-center">
-            <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-white/15">Si ninguna de esto te describe — este conocimiento <span className="text-[#FFC300]/50 font-bold">SÍ es para ti</span></p>
+            <p className="font-mono-cosmic text-[0.6rem] tracking-[0.2em] text-white/15">Si ninguna de esto te describe — este conocimiento <span className="text-[#FFC300]/50 font-bold">SÍ es para ti</span></p>
           </RevealItem>
         </section>
 
@@ -776,13 +776,13 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
             <CtaButton text="🔓 DESBLOQUEAR ACCESO — $27 (80% OFF)" href={CTA_BASIC} size="lg" sameWindow />
             <CtaButton text="🔥 MEGAPACK COMPLETO — $57" onClick={onGoToPack} size="lg" />
           </RevealItem>
-          <RevealItem delay={1.5} dur={1} className="font-mono-cosmic text-[0.3rem] tracking-[0.15em] text-[#FFC300]/30 text-center mt-2">Precio pre-lanzamiento 2026 · Sube pronto</RevealItem>
+          <RevealItem delay={1.5} dur={1} className="font-mono-cosmic text-[0.55rem] tracking-[0.15em] text-[#FFC300]/30 text-center mt-2">Precio pre-lanzamiento 2026 · Sube pronto</RevealItem>
         </section>
 
         {/* FOOTER */}
         <footer className="relative py-8 text-center border-t border-white/[0.03]">
-          <p className="font-mono-cosmic text-[0.3rem] tracking-[0.2em] text-white/10">EL SABIO MANIPULADOR © {new Date().getFullYear()} — Todos los derechos reservados</p>
-          <p className="font-mono-cosmic text-[0.25rem] tracking-[0.15em] text-white/[0.06] mt-1">Este producto se vende a través de Hotmart. La plataforma no hace control editorial previo de los productos comercializados, ni evalúa la tecnicidad y experiencia de quienes los producen.</p>
+          <p className="font-mono-cosmic text-[0.55rem] tracking-[0.2em] text-white/10">EL SABIO MANIPULADOR © {new Date().getFullYear()} — Todos los derechos reservados</p>
+          <p className="font-mono-cosmic text-[0.5rem] tracking-[0.15em] text-white/[0.06] mt-1">Este producto se vende a través de Hotmart. La plataforma no hace control editorial previo de los productos comercializados, ni evalúa la tecnicidad y experiencia de quienes los producen.</p>
         </footer>
       </main>
     </>
@@ -803,7 +803,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
         <div className="sticky top-10 z-20 px-4 py-3">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 font-mono-cosmic text-[0.4rem] tracking-[0.2em] text-[#FFC300]/50 hover:text-[#FFC300] transition-colors"
+            className="flex items-center gap-2 font-mono-cosmic text-[0.65rem] tracking-[0.2em] text-[#FFC300]/50 hover:text-[#FFC300] transition-colors"
             style={{ animation: "fadeInUp 0.8s ease-out 0.5s both" }}
           >
             <span>←</span> VOLVER A OFERTAS
@@ -817,7 +817,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
           </div>
           <div style={{ animation: "cosmicFadeIn 3s ease-out 0.5s both" }} className="text-center mt-8">
             <div className="inline-block px-3 py-1 rounded-sm border border-[#FFC300]/[0.15] mb-4">
-              <span className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/60">⭐ MÁS POPULAR · 3 PACKS EN 1</span>
+              <span className="font-mono-cosmic text-[0.6rem] tracking-[0.2em] text-[#FFC300]/60">⭐ MÁS POPULAR · 3 PACKS EN 1</span>
             </div>
             <h1 className="font-display text-3xl sm:text-5xl font-black text-white/90">MEGAPACK</h1>
             <h1 className="font-display text-3xl sm:text-5xl font-black text-[#FFC300] golden-glow-strong mt-1">COMPLETO</h1>
@@ -834,9 +834,9 @@ function PackPage({ onBack }: { onBack: () => void }) {
           >
             <div className="py-3 px-5 border-b border-[#FFC300]/[0.06] flex items-center justify-between">
               <div>
-                <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30">PACK 1</p>
+                <p className="font-mono-cosmic text-[0.6rem] tracking-[0.2em] text-[#FFC300]/30">PACK 1</p>
                 <h3 className="font-display text-lg font-black text-white/80">El Sabio Oscuro de la Psicología</h3>
-                <p className="font-body text-[0.6rem] text-white/25">Manipulación & Poder</p>
+                <p className="font-body text-[0.85rem] text-white/25">Manipulación & Poder</p>
               </div>
               <span className="font-mono-cosmic text-xs text-white/15 line-through">$128</span>
             </div>
@@ -847,13 +847,13 @@ function PackPage({ onBack }: { onBack: () => void }) {
               {PACK1_BOOKS.map((b, i) => (
                 <div key={i} className="flex items-start justify-between gap-2">
                   <div className="flex items-start gap-1.5">
-                    <span className="text-[#FFC300] text-[0.6rem] mt-0.5">✓</span>
+                    <span className="text-[#FFC300] text-[0.85rem] mt-0.5">✓</span>
                     <div>
-                      <p className="font-body text-[0.65rem] text-white/50">{b.title}</p>
-                      <p className="font-body text-[0.5rem] text-white/20">{b.sub}</p>
+                      <p className="font-body text-[0.9rem] text-white/50">{b.title}</p>
+                      <p className="font-body text-[0.75rem] text-white/20">{b.sub}</p>
                     </div>
                   </div>
-                  <span className="font-mono-cosmic text-[0.35rem] text-white/15 line-through flex-shrink-0">{b.price}</span>
+                  <span className="font-mono-cosmic text-[0.6rem] text-white/15 line-through flex-shrink-0">{b.price}</span>
                 </div>
               ))}
             </div>
@@ -866,9 +866,9 @@ function PackPage({ onBack }: { onBack: () => void }) {
           >
             <div className="py-3 px-5 border-b border-[#FFC300]/[0.06] flex items-center justify-between">
               <div>
-                <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30">PACK 2</p>
+                <p className="font-mono-cosmic text-[0.6rem] tracking-[0.2em] text-[#FFC300]/30">PACK 2</p>
                 <h3 className="font-display text-lg font-black text-white/80">El Domador Encantador</h3>
-                <p className="font-body text-[0.6rem] text-white/25">Seducción & Dominio Emocional</p>
+                <p className="font-body text-[0.85rem] text-white/25">Seducción & Dominio Emocional</p>
               </div>
               <span className="font-mono-cosmic text-xs text-white/15 line-through">$133</span>
             </div>
@@ -879,13 +879,13 @@ function PackPage({ onBack }: { onBack: () => void }) {
               {PACK2_BOOKS.map((b, i) => (
                 <div key={i} className="flex items-start justify-between gap-2">
                   <div className="flex items-start gap-1.5">
-                    <span className="text-[#FFC300] text-[0.6rem] mt-0.5">✓</span>
+                    <span className="text-[#FFC300] text-[0.85rem] mt-0.5">✓</span>
                     <div>
-                      <p className="font-body text-[0.65rem] text-white/50">{b.title}</p>
-                      <p className="font-body text-[0.5rem] text-white/20">{b.sub}</p>
+                      <p className="font-body text-[0.9rem] text-white/50">{b.title}</p>
+                      <p className="font-body text-[0.75rem] text-white/20">{b.sub}</p>
                     </div>
                   </div>
-                  <span className="font-mono-cosmic text-[0.35rem] text-white/15 line-through flex-shrink-0">{b.price}</span>
+                  <span className="font-mono-cosmic text-[0.6rem] text-white/15 line-through flex-shrink-0">{b.price}</span>
                 </div>
               ))}
             </div>
@@ -898,9 +898,9 @@ function PackPage({ onBack }: { onBack: () => void }) {
           >
             <div className="py-3 px-5 border-b border-[#FFC300]/[0.06] flex items-center justify-between">
               <div>
-                <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30">PACK 3</p>
+                <p className="font-mono-cosmic text-[0.6rem] tracking-[0.2em] text-[#FFC300]/30">PACK 3</p>
                 <h3 className="font-display text-lg font-black text-white/80">Jaque Mate Oscuro</h3>
-                <p className="font-body text-[0.6rem] text-white/25">Psicología en Negocios & Ventas</p>
+                <p className="font-body text-[0.85rem] text-white/25">Psicología en Negocios & Ventas</p>
               </div>
               <span className="font-mono-cosmic text-xs text-white/15 line-through">$133</span>
             </div>
@@ -911,13 +911,13 @@ function PackPage({ onBack }: { onBack: () => void }) {
               {PACK3_BOOKS.map((b, i) => (
                 <div key={i} className="flex items-start justify-between gap-2">
                   <div className="flex items-start gap-1.5">
-                    <span className="text-[#FFC300] text-[0.6rem] mt-0.5">✓</span>
+                    <span className="text-[#FFC300] text-[0.85rem] mt-0.5">✓</span>
                     <div>
-                      <p className="font-body text-[0.65rem] text-white/50">{b.title}</p>
-                      <p className="font-body text-[0.5rem] text-white/20">{b.sub}</p>
+                      <p className="font-body text-[0.9rem] text-white/50">{b.title}</p>
+                      <p className="font-body text-[0.75rem] text-white/20">{b.sub}</p>
                     </div>
                   </div>
-                  <span className="font-mono-cosmic text-[0.35rem] text-white/15 line-through flex-shrink-0">{b.price}</span>
+                  <span className="font-mono-cosmic text-[0.6rem] text-white/15 line-through flex-shrink-0">{b.price}</span>
                 </div>
               ))}
             </div>
@@ -930,7 +930,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
             style={{ background: "linear-gradient(180deg, rgba(255,195,0,0.06) 0%, rgba(5,5,5,0.98) 100%)" }}
           >
             <div className="py-5 px-6 text-center border-b border-[#FFC300]/[0.08]">
-              <p className="font-mono-cosmic text-[0.4rem] tracking-[0.25em] text-[#FFC300]/40">RESUMEN DE PRECIOS</p>
+              <p className="font-mono-cosmic text-[0.65rem] tracking-[0.25em] text-[#FFC300]/40">RESUMEN DE PRECIOS</p>
             </div>
             <div className="py-4 px-6 space-y-2">
               <div className="flex justify-between">
@@ -960,11 +960,11 @@ function PackPage({ onBack }: { onBack: () => void }) {
                 <span className="font-body text-sm text-white/30">US$</span>
                 <span className="font-display text-6xl font-black text-[#FFC300] golden-glow-strong">57</span>
               </div>
-              <p className="font-mono-cosmic text-[0.4rem] tracking-[0.25em] text-[#FFC300]/50 mt-2 font-bold">15 LIBROS · 92% DESCUENTO · PAGO ÚNICO</p>
+              <p className="font-mono-cosmic text-[0.65rem] tracking-[0.25em] text-[#FFC300]/50 mt-2 font-bold">15 LIBROS · 92% DESCUENTO · PAGO ÚNICO</p>
               <div className="mt-5">
                 <CtaButton text="🔥 ACTIVAR ACCESO TOTAL →" href={CTA_PACK} size="lg" sameWindow />
               </div>
-              <p className="font-mono-cosmic text-[0.3rem] tracking-[0.2em] text-white/10 mt-3">ACCESO INMEDIATO · GARANTÍA 7 DÍAS · PDF</p>
+              <p className="font-mono-cosmic text-[0.55rem] tracking-[0.2em] text-white/10 mt-3">ACCESO INMEDIATO · GARANTÍA 7 DÍAS · PDF</p>
             </div>
           </div>
         </section>
@@ -1012,8 +1012,8 @@ function PackPage({ onBack }: { onBack: () => void }) {
 
         {/* FOOTER */}
         <footer className="relative py-8 text-center border-t border-white/[0.03]">
-          <p className="font-mono-cosmic text-[0.3rem] tracking-[0.2em] text-white/10">EL SABIO MANIPULADOR © {new Date().getFullYear()} — Todos los derechos reservados</p>
-          <p className="font-mono-cosmic text-[0.25rem] tracking-[0.15em] text-white/[0.06] mt-1">Este producto se vende a través de Hotmart. La plataforma no hace control editorial previo de los productos comercializados, ni evalúa la tecnicidad y experiencia de quienes los producen.</p>
+          <p className="font-mono-cosmic text-[0.55rem] tracking-[0.2em] text-white/10">EL SABIO MANIPULADOR © {new Date().getFullYear()} — Todos los derechos reservados</p>
+          <p className="font-mono-cosmic text-[0.5rem] tracking-[0.15em] text-white/[0.06] mt-1">Este producto se vende a través de Hotmart. La plataforma no hace control editorial previo de los productos comercializados, ni evalúa la tecnicidad y experiencia de quienes los producen.</p>
         </footer>
       </main>
     </>
