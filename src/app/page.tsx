@@ -296,8 +296,6 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
   const hasBreached = useRef(false);
 
   const { scrollYProgress } = useScroll({ target: containerRef });
-  const entityY = useTransform(scrollYProgress, [0.05, 0.16], [80, -100]);
-  const entityScale = useTransform(scrollYProgress, [0.05, 0.16], [0.8, 1.15]);
 
   useEffect(() => { const t = setTimeout(() => setLoaded(false), 800); return () => clearTimeout(t); }, []);
 
@@ -363,8 +361,11 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
 
         {/* 1. HERO */}
         <section className="relative min-h-screen flex flex-col items-center justify-center px-6">
-          <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 5, delay: 2.5 }} className="mb-12">
-            <GoldenSingularity size={45} intensity={0.5} variant="icon" />
+          <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 5, delay: 2.5 }} className="mb-10">
+            <CosmicEntity size={200} intensity={1} />
+          </motion.div>
+          <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 3, delay: 3 }} className="mb-4">
+            <GoldenSingularity size={30} intensity={0.4} variant="icon" />
           </motion.div>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3 }} className="font-mono-cosmic text-[0.3rem] tracking-[0.3em] text-[#FFC300]/15 mb-4">
             {"// ARCHIVO RESTRINGIDO — NIVEL DE ACCESO: ABSOLUTO"}
@@ -390,19 +391,13 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 7 }} className="font-mono-cosmic text-[0.35rem] tracking-[0.15em] text-[#FFC300]/40 font-bold mt-3">80% OFF PRE-LANZAMIENTO</motion.p>
         </section>
 
-        {/* 2. GUARDIAN */}
-        <section className="relative min-h-[110vh] flex flex-col items-center justify-center px-6">
-          <div className="h-[10vh]" />
-          <motion.div style={{ y: entityY, scale: entityScale }} className="relative z-10">
-            <CosmicEntity size={230} intensity={0.8 + scrollProg * 0.6} />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 15, filter: "blur(8px)" }} whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 2.5, delay: 0.8 }} className="text-center mt-10 relative z-10 max-w-[320px]">
+        {/* 2. GUARDIAN — Transición visual */}
+        <section className="relative min-h-[50vh] flex flex-col items-center justify-center px-6">
+          <motion.div initial={{ opacity: 0, y: 15, filter: "blur(8px)" }} whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 2.5, delay: 0.3 }} className="text-center relative z-10 max-w-[320px]">
             <p className="font-display text-2xl sm:text-3xl font-black text-[#FFC300] golden-glow-strong">Domina la Mente Humana</p>
+            <p className="font-body text-xs text-white/25 mt-3">Desliza para descubrir lo que te han ocultado</p>
           </motion.div>
-          <div className="h-[15vh]" />
         </section>
-
-        <section className="relative h-[16vh]" />
 
         {/* 3. EXTRACTOS */}
         <section className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20">
