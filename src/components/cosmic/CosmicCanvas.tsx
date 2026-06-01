@@ -76,6 +76,8 @@ export default function CosmicCanvas() {
   const timeRef = useRef(0);
   const scrollRef = useRef(0);
   const lastShootRef = useRef(0);
+  const pausedRef = useRef(false);
+  const lastFrameTimeRef = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -89,10 +91,13 @@ export default function CosmicCanvas() {
     canvas.height = height;
 
     const isMobile = width < 768;
+    const useShadow = !isMobile;
+    const targetFPS = isMobile ? 30 : 60;
+    const frameInterval = 1000 / targetFPS;
 
     // ── LAYER 1: Deep Stars ──
     const stars: Particle[] = [];
-    for (let i = 0; i < (isMobile ? 120 : 250); i++) {
+    for (let i = 0; i < (isMobile ? 60 : 250); i++) {
       const y = Math.random() * height;
       stars.push({
         x: Math.random() * width,
@@ -110,7 +115,7 @@ export default function CosmicCanvas() {
     }
 
     // ── LAYER 2: Enhanced Nebula Clouds ──
-    const mobileNebulaScale = isMobile ? 0.7 : 1;
+    const mobileNebulaScale = isMobile ? 0.5 : 1;
     const nebulas: NebulaCloud[] = [
       { x: width * 0.2, y: height * 0.15, baseY: height * 0.15, radius: 280 * mobileNebulaScale, r: 20, g: 32, b: 61, opacity: 0.05, phase: 0, speed: 0.002, parallaxFactor: 0.08 },
       { x: width * 0.8, y: height * 0.4, baseY: height * 0.4, radius: 320 * mobileNebulaScale, r: 29, g: 49, b: 96, opacity: 0.04, phase: 1.5, speed: 0.0015, parallaxFactor: 0.06 },
@@ -121,7 +126,7 @@ export default function CosmicCanvas() {
 
     // ── LAYER 3: Cosmic Dust ──
     const dust: Particle[] = [];
-    for (let i = 0; i < (isMobile ? 25 : 55); i++) {
+    for (let i = 0; i < (isMobile ? 10 : 55); i++) {
       const y = Math.random() * height;
       dust.push({
         x: Math.random() * width,
@@ -138,7 +143,7 @@ export default function CosmicCanvas() {
 
     // ── LAYER 4: Holographic Fragments ──
     const frags: FloatingFrag[] = [];
-    for (let i = 0; i < (isMobile ? 5 : 10); i++) {
+    for (let i = 0; i < (isMobile ? 3 : 10); i++) {
       const y = Math.random() * height;
       frags.push({
         x: Math.random() * width,
@@ -167,7 +172,7 @@ export default function CosmicCanvas() {
     const clusters: SingularityCluster[] = [
       {
         x: width * 0.5, baseY: height * 0.5, radius: 35,
-        particles: Array.from({ length: 16 }, () => ({
+        particles: Array.from({ length: isMobile ? 8 : 16 }, () => ({
           angle: Math.random() * Math.PI * 2,
           dist: 12 + Math.random() * 50,
           speed: 0.003 + Math.random() * 0.007,
@@ -181,7 +186,7 @@ export default function CosmicCanvas() {
 
     // ── LAYER 7: Golden Particles ──
     const gold: Particle[] = [];
-    for (let i = 0; i < (isMobile ? 18 : 40); i++) {
+    for (let i = 0; i < (isMobile ? 8 : 40); i++) {
       const y = Math.random() * height;
       gold.push({
         x: Math.random() * width,
@@ -202,20 +207,38 @@ export default function CosmicCanvas() {
     shootingRef.current = shootingStars;
     clusterRef.current = clusters;
 
+    // ── Debounced resize handler ──
+    let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
     const handleResize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
+      if (resizeTimeout) clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+      }, 150);
     };
     const handleMouseMove = (e: MouseEvent) => { mouseRef.current = { x: e.clientX, y: e.clientY }; };
     const handleTouchMove = (e: TouchEvent) => { if (e.touches[0]) mouseRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; };
     const handleScroll = () => { scrollRef.current = window.scrollY; };
 
+    // ── Visibility change handler ──
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        pausedRef.current = true;
+        cancelAnimationFrame(animFrameRef.current);
+      } else {
+        pausedRef.current = false;
+        lastFrameTimeRef.current = performance.now();
+        animFrameRef.current = requestAnimationFrame(drawFrame);
+      }
+    };
+
     window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("touchmove", handleTouchMove, { passive: true });
     window.addEventListener("scroll", handleScroll, { passive: true });
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     function drawPolygon(cx: number, cy: number, r: number, sides: number, rot: number) {
       if (!ctx) return;
@@ -254,8 +277,20 @@ export default function CosmicCanvas() {
       star.active = true;
     }
 
-    function drawFrame() {
+    function drawFrame(timestamp: number) {
       if (!canvas || !ctx) return;
+
+      // ── FPS throttle on mobile ──
+      const elapsed = timestamp - lastFrameTimeRef.current;
+      if (elapsed < frameInterval) {
+        animFrameRef.current = requestAnimationFrame(drawFrame);
+        return;
+      }
+      lastFrameTimeRef.current = timestamp - (elapsed % frameInterval);
+
+      // ── Visibility pause check ──
+      if (pausedRef.current) return;
+
       timeRef.current += 0.01;
 
       // Clear with trail effect
@@ -303,8 +338,10 @@ export default function CosmicCanvas() {
         ctx.beginPath();
         ctx.arc(s.x, s.y, 2, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 235, 180, ${op})`;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = `rgba(255, 195, 0, ${op * 0.5})`;
+        if (useShadow) {
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = `rgba(255, 195, 0, ${op * 0.5})`;
+        }
         ctx.fill();
         ctx.shadowBlur = 0;
 
@@ -348,8 +385,10 @@ export default function CosmicCanvas() {
           ctx.beginPath();
           ctx.arc(px, py, p.size, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(255, 195, 0, ${p.opacity * pulse})`;
-          ctx.shadowBlur = 3;
-          ctx.shadowColor = `rgba(255, 195, 0, ${p.opacity * 0.25})`;
+          if (useShadow) {
+            ctx.shadowBlur = 3;
+            ctx.shadowColor = `rgba(255, 195, 0, ${p.opacity * 0.25})`;
+          }
           ctx.fill();
           ctx.shadowBlur = 0;
         });
@@ -390,15 +429,19 @@ export default function CosmicCanvas() {
 
         if (p.type === "gold") {
           ctx.fillStyle = `rgba(255, 195, 0, ${op})`;
-          ctx.shadowBlur = 6;
-          ctx.shadowColor = "rgba(255,195,0,0.25)";
+          if (useShadow) {
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = "rgba(255,195,0,0.25)";
+          }
         } else if (p.type === "dust") {
           ctx.fillStyle = `rgba(20, 32, 61, ${op})`;
           ctx.shadowBlur = 0;
         } else {
           ctx.fillStyle = `rgba(255, 255, 255, ${op})`;
-          ctx.shadowBlur = p.size > 0.8 ? 1.5 : 0;
-          ctx.shadowColor = "rgba(255,255,255,0.08)";
+          if (useShadow) {
+            ctx.shadowBlur = p.size > 0.8 ? 1.5 : 0;
+            ctx.shadowColor = "rgba(255,255,255,0.08)";
+          }
         }
         ctx.fill();
         ctx.shadowBlur = 0;
@@ -407,6 +450,7 @@ export default function CosmicCanvas() {
       animFrameRef.current = requestAnimationFrame(drawFrame);
     }
 
+    lastFrameTimeRef.current = performance.now();
     animFrameRef.current = requestAnimationFrame(drawFrame);
 
     return () => {
@@ -414,7 +458,9 @@ export default function CosmicCanvas() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       cancelAnimationFrame(animFrameRef.current);
+      if (resizeTimeout) clearTimeout(resizeTimeout);
     };
   }, []);
 

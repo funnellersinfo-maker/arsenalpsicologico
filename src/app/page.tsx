@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { motion, useScroll, AnimatePresence } from "framer-motion";
 import CosmicCanvas from "@/components/cosmic/CosmicCanvas";
 import CosmicEntity from "@/components/cosmic/CosmicEntity";
 import GoldenSingularity from "@/components/cosmic/GoldenSingularity";
@@ -98,7 +98,6 @@ function BackgroundMusic() {
         audioRef.current.volume = 0.35;
         audioRef.current.play().catch(() => {});
       }
-      // Remove listeners after first play
       window.removeEventListener("scroll", playOnFirstInteraction);
       window.removeEventListener("click", playOnFirstInteraction);
       window.removeEventListener("touchstart", playOnFirstInteraction);
@@ -121,33 +120,39 @@ function BackgroundMusic() {
 }
 
 /* ══════════════════════════════════════ */
-/* MAGIC SPARKLES                         */
+/* MAGIC SPARKLES (CSS animation)         */
 /* ══════════════════════════════════════ */
-function MagicSparkles() {
-  const sparkles = Array.from({ length: 12 }, (_, i) => ({
+function MagicSparkles({ children }: { children?: React.ReactNode }) {
+  const sparkles = useMemo(() => Array.from({ length: 12 }, (_, i) => ({
     id: i,
     left: Math.random() * 100,
     delay: Math.random() * 5,
     duration: 2 + Math.random() * 3,
     size: 2 + Math.random() * 4,
-  }));
+  })), []);
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
-      {sparkles.map((s) => (
-        <motion.div
-          key={s.id}
-          className="absolute rounded-full bg-[#FFC300]"
-          style={{ left: `${s.left}%`, width: s.size, height: s.size }}
-          animate={{ y: [0, -30, -60], opacity: [0, 1, 0], scale: [0, 1.2, 0] }}
-          transition={{ duration: s.duration, delay: s.delay, repeat: Infinity, ease: "easeOut" }}
-        />
-      ))}
+    <div className="relative">
+      {children}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
+        {sparkles.map((s) => (
+          <div
+            key={s.id}
+            className="absolute rounded-full bg-[#FFC300]"
+            style={{
+              left: `${s.left}%`,
+              width: s.size,
+              height: s.size,
+              animation: `sparkleFloat ${s.duration}s ease-out ${s.delay}s infinite`,
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
 /* ══════════════════════════════════════ */
-/* CTA BUTTON                             */
+/* CTA BUTTON (CSS hover/active)          */
 /* ══════════════════════════════════════ */
 function CtaButton({ text, href, size = "lg", sameWindow = false, onClick }: {
   text: string; href?: string; size?: "lg" | "md" | "sm"; sameWindow?: boolean; onClick?: () => void;
@@ -157,29 +162,27 @@ function CtaButton({ text, href, size = "lg", sameWindow = false, onClick }: {
     md: "w-full max-w-[300px] text-[0.55rem] tracking-[0.25em] px-7 py-3.5",
     sm: "w-full max-w-[260px] text-[0.5rem] tracking-[0.2em] px-5 py-3",
   };
-  const shared = `relative z-10 block font-mono-cosmic font-bold text-center overflow-hidden rounded-sm text-[#050505] bg-gradient-to-r from-[#FFB800] via-[#FFC300] to-[#FFD84D] ${sizeClasses[size]}`;
+  const shared = `cta-btn relative z-10 block font-mono-cosmic font-bold text-center overflow-hidden rounded-sm text-[#050505] bg-gradient-to-r from-[#FFB800] via-[#FFC300] to-[#FFD84D] ${sizeClasses[size]}`;
   const style = { boxShadow: "0 0 35px rgba(255,195,0,0.12)", animation: "breatheGlow 3s ease-in-out infinite" };
 
   if (onClick) {
     return (
-      <motion.button onClick={onClick} className={shared} style={style}
-        whileHover={{ scale: 1.04, boxShadow: "0 0 55px rgba(255,195,0,0.3)" }} whileTap={{ scale: 0.97 }}>
+      <button onClick={onClick} className={shared} style={style}>
         <span className="relative z-10">{text}</span>
         <div className="absolute inset-0 holo-shimmer" />
-      </motion.button>
+      </button>
     );
   }
   return (
-    <motion.a href={href} target={sameWindow ? "_self" : "_blank"} rel="noopener noreferrer" className={shared} style={style}
-      whileHover={{ scale: 1.04, boxShadow: "0 0 55px rgba(255,195,0,0.3)" }} whileTap={{ scale: 0.97 }}>
+    <a href={href} target={sameWindow ? "_self" : "_blank"} rel="noopener noreferrer" className={shared} style={style}>
       <span className="relative z-10">{text}</span>
       <div className="absolute inset-0 holo-shimmer" />
-    </motion.a>
+    </a>
   );
 }
 
 /* ══════════════════════════════════════ */
-/* FAQ ITEM                               */
+/* FAQ ITEM (CSS transitions)             */
 /* ══════════════════════════════════════ */
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
@@ -187,15 +190,13 @@ function FaqItem({ q, a }: { q: string; a: string }) {
     <div className="border-b border-white/[0.04] py-4">
       <button onClick={() => setOpen(!open)} className="w-full flex items-start justify-between gap-3 text-left">
         <span className="font-display text-sm font-bold text-white/70">{q}</span>
-        <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.3 }} className="text-[#FFC300] text-lg leading-none flex-shrink-0 mt-0.5">+</motion.span>
+        <span className={`text-[#FFC300] text-lg leading-none flex-shrink-0 mt-0.5 transition-transform duration-300 ${open ? "rotate-45" : ""}`}>+</span>
       </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.4 }} className="overflow-hidden">
-            <p className="font-body text-xs text-white/35 leading-relaxed pt-3">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className={`grid transition-all duration-400 ${open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+        <div className="overflow-hidden">
+          <p className="font-body text-xs text-white/35 leading-relaxed pt-3">{a}</p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -205,7 +206,7 @@ function SectionTag({ text }: { text: string }) {
 }
 
 /* ══════════════════════════════════════ */
-/* STICKY BOTTOM BAR                      */
+/* STICKY BOTTOM BAR (CSS transitions)    */
 /* ══════════════════════════════════════ */
 function StickyBar({ page }: { page: "main" | "pack" }) {
   const [visible, setVisible] = useState(false);
@@ -219,53 +220,44 @@ function StickyBar({ page }: { page: "main" | "pack" }) {
   const offerText = page === "main" ? "Acceso Básico $27 · 80% OFF" : "15 LIBROS — Solo $57 USD";
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 100, opacity: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="fixed bottom-0 left-0 right-0 z-[55] bg-[#0A0A0A]/98 backdrop-blur-md border-t border-[#FFC300]/[0.08] px-4 py-3"
-        >
-          <div className="max-w-lg mx-auto flex items-center justify-between gap-3">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <CountdownTimer compact />
-                <span className="font-mono-cosmic text-[0.35rem] tracking-[0.15em] text-white/25">|</span>
-                <span className="font-body text-[0.6rem] text-[#FFC300]/60 font-bold truncate">{offerText}</span>
-              </div>
-            </div>
-            <motion.a
-              href={ctaHref} target="_blank" rel="noopener noreferrer"
-              className="flex-shrink-0 font-mono-cosmic text-[0.5rem] tracking-[0.2em] font-bold px-5 py-2.5 rounded-sm bg-gradient-to-r from-[#FFB800] via-[#FFC300] to-[#FFD84D] text-[#050505]"
-              style={{ boxShadow: "0 0 20px rgba(255,195,0,0.2)" }}
-              whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}
-            >
-              {page === "main" ? "COMPRAR $27" : "COMPRAR $57"}
-            </motion.a>
+    <div
+      className={`fixed bottom-0 left-0 right-0 z-[55] bg-[#0A0A0A]/98 backdrop-blur-md border-t border-[#FFC300]/[0.08] px-4 py-3 transition-all duration-400 ${visible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
+    >
+      <div className="max-w-lg mx-auto flex items-center justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <CountdownTimer compact />
+            <span className="font-mono-cosmic text-[0.35rem] tracking-[0.15em] text-white/25">|</span>
+            <span className="font-body text-[0.6rem] text-[#FFC300]/60 font-bold truncate">{offerText}</span>
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        </div>
+        <a
+          href={ctaHref} target="_blank" rel="noopener noreferrer"
+          className="cta-btn flex-shrink-0 font-mono-cosmic text-[0.5rem] tracking-[0.2em] font-bold px-5 py-2.5 rounded-sm bg-gradient-to-r from-[#FFB800] via-[#FFC300] to-[#FFD84D] text-[#050505]"
+          style={{ boxShadow: "0 0 20px rgba(255,195,0,0.2)" }}
+        >
+          {page === "main" ? "COMPRAR $27" : "COMPRAR $57"}
+        </a>
+      </div>
+    </div>
   );
 }
 
 /* ══════════════════════════════════════ */
-/* WHATSAPP FLOATING BUTTON               */
+/* WHATSAPP FLOATING BUTTON (CSS anim)    */
 /* ══════════════════════════════════════ */
 function WhatsAppButton({ link }: { link: string }) {
   return (
-    <motion.a
+    <a
       href={link} target="_blank" rel="noopener noreferrer"
-      className="fixed bottom-20 right-4 z-[56] w-11 h-11 rounded-full bg-[#25D366]/80 hover:bg-[#25D366] flex items-center justify-center shadow-md shadow-[#25D366]/20 opacity-50 hover:opacity-100 transition-opacity duration-300"
-      whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
-      initial={{ scale: 0 }} animate={{ scale: 1 }}
-      transition={{ delay: 6, type: "spring", stiffness: 200 }}
+      className="fixed bottom-20 right-4 z-[56] w-11 h-11 rounded-full bg-[#25D366]/80 hover:bg-[#25D366] flex items-center justify-center shadow-md shadow-[#25D366]/20 opacity-50 hover:opacity-100 transition-opacity duration-300 hover:scale-110 active:scale-95"
+      style={{ animation: "popIn 0.4s ease-out 6s both" }}
       aria-label="Contactar por WhatsApp"
     >
       <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
       </svg>
-    </motion.a>
+    </a>
   );
 }
 
@@ -283,6 +275,54 @@ function ScrollBar({ progress }: { progress: number }) {
       }} />
     </div>
   );
+}
+
+/* ══════════════════════════════════════ */
+/* SCROLL REVEAL HOOK                     */
+/* ══════════════════════════════════════ */
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.animation = "fadeInUp 1.5s ease-out forwards";
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  return ref;
+}
+
+/* ══════════════════════════════════════ */
+/* REVEAL ITEM (IntersectionObserver)     */
+/* ══════════════════════════════════════ */
+function RevealItem({ children, className, style, delay = 0, anim = "fadeInUp", dur = 1.5 }: {
+  children: React.ReactNode; className?: string; style?: React.CSSProperties; delay?: number; anim?: string; dur?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.animation = `${anim} ${dur}s ease-out ${delay}s forwards`;
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [delay, anim, dur]);
+  return <div ref={ref} className={className} style={{ opacity: 0, ...style }}>{children}</div>;
 }
 
 /* ══════════════════════════════════════ */
@@ -317,7 +357,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
 
   return (
     <>
-      {/* LOADER */}
+      {/* LOADER — kept as motion for exit animation */}
       <AnimatePresence>
         {loaded && (
           <motion.div className="fixed inset-0 z-[100] bg-[#050505] flex items-center justify-center" exit={{ opacity: 0 }} transition={{ duration: 3, ease: "easeInOut" }}>
@@ -330,14 +370,9 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
 
       <CountdownTimer />
       <BackgroundMusic />
-      <CosmicCanvas />
-      <div className="fixed inset-0 z-[1] scanlines pointer-events-none" />
-      <div className="grain-overlay" />
-      <div className="scan-sweep" />
-      <div className="fixed inset-0 z-[2] pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgba(5,5,5,0.5) 80%, rgba(5,5,5,0.85) 100%)" }} />
       <ScrollBar progress={scrollProg} />
 
-      {/* BREACH */}
+      {/* BREACH — kept as motion for complex state-driven animation */}
       {breachPhase > 0 && (
         <motion.div className="fixed inset-0 z-[90] flex items-center justify-center" style={{ backgroundColor: "#050505" }} initial={{ opacity: 0 }} animate={{ opacity: breachPhase === 5 ? 0 : 1 }} transition={{ duration: breachPhase === 5 ? 1.8 : 0.6 }}>
           {breachPhase >= 2 && (
@@ -359,74 +394,74 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
       {/* SCROLL JOURNEY */}
       <main ref={containerRef} className="relative" style={{ paddingTop: "36px" }}>
 
-        {/* 1. HERO */}
+        {/* 1. HERO — CSS animations replace motion.div/motion.p */}
         <section className="relative min-h-screen flex flex-col items-center justify-center px-6">
-          <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 5, delay: 2.5 }} className="mb-10">
+          <div style={{ animation: "fadeInScale 5s ease-out 2.5s both" }} className="mb-10">
             <CosmicEntity size={200} intensity={1} />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 3, delay: 3 }} className="mb-4">
+          </div>
+          <div style={{ animation: "fadeInScale 3s ease-out 3s both" }} className="mb-4">
             <GoldenSingularity size={30} intensity={0.4} variant="icon" />
-          </motion.div>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3 }} className="font-mono-cosmic text-[0.3rem] tracking-[0.3em] text-[#FFC300]/15 mb-4">
+          </div>
+          <p style={{ animation: "fadeInUp 1.5s ease-out 3s both" }} className="font-mono-cosmic text-[0.3rem] tracking-[0.3em] text-[#FFC300]/15 mb-4">
             {"// ARCHIVO RESTRINGIDO — NIVEL DE ACCESO: ABSOLUTO"}
-          </motion.p>
-          <motion.div initial={{ opacity: 0, y: 25, filter: "blur(10px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 4, delay: 3.5 }} className="text-center">
+          </p>
+          <div style={{ animation: "cosmicFadeIn 4s ease-out 3.5s both" }} className="text-center">
             <h1 className="font-display text-[2.8rem] sm:text-6xl font-black leading-[0.95] text-white/85">El 97% de las personas son</h1>
             <h1 className="font-display text-[2.8rem] sm:text-6xl font-black leading-[0.95] mt-1"><span className="text-[#FFC300] golden-glow-strong">manipuladas a diario</span></h1>
             <h1 className="font-display text-[2.8rem] sm:text-6xl font-black leading-[0.95] mt-1 text-white/85">sin saberlo.</h1>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 2, delay: 4.5 }} className="font-body text-sm text-white/30 text-center mt-5 max-w-[320px]">Este libro te pone del otro lado.</motion.p>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 2, delay: 5 }} className="font-body text-xs text-white/20 text-center mt-3 max-w-[340px]">
+          </div>
+          <p style={{ animation: "fadeInUp 2s ease-out 4.5s both" }} className="font-body text-sm text-white/30 text-center mt-5 max-w-[320px]">Este libro te pone del otro lado.</p>
+          <p style={{ animation: "fadeInUp 2s ease-out 5s both" }} className="font-body text-xs text-white/20 text-center mt-3 max-w-[340px]">
             Descubre los principios de la psicología oscura que usan líderes, negociadores y estrategas para controlar cualquier situación — y aprende a detectar cuando alguien los usa contra ti.
-          </motion.p>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5, delay: 5.8 }} className="mt-8">
+          </p>
+          <div style={{ animation: "fadeInUp 1.5s ease-out 5.8s both" }} className="mt-8">
             <CtaButton text="🔓 DESBLOQUEAR ACCESO AHORA" href={CTA_BASIC} size="lg" sameWindow />
-          </motion.div>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 6.2 }} className="font-mono-cosmic text-[0.3rem] tracking-[0.12em] text-[#FFC300]/30 mt-2">80% DESCUENTO · PRE-LANZAMIENTO 2026</motion.p>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 6.5 }} className="flex items-center gap-4 mt-5">
+          </div>
+          <p style={{ animation: "fadeInUp 1.5s ease-out 6.2s both" }} className="font-mono-cosmic text-[0.3rem] tracking-[0.12em] text-[#FFC300]/30 mt-2">80% DESCUENTO · PRE-LANZAMIENTO 2026</p>
+          <div style={{ animation: "fadeInUp 1.5s ease-out 6.5s both" }} className="flex items-center gap-4 mt-5">
             <span className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/25 tracking-[0.12em]">📥 +2,400 copias</span>
             <span className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/25 tracking-[0.12em]">⭐ 4.8/5 valoración</span>
             <span className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/25 tracking-[0.12em]">🔒 Garantía 7 días</span>
-          </motion.div>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 7 }} className="font-mono-cosmic text-[0.35rem] tracking-[0.15em] text-[#FFC300]/40 font-bold mt-3">80% OFF PRE-LANZAMIENTO</motion.p>
+          </div>
+          <p style={{ animation: "fadeInUp 1.5s ease-out 7s both" }} className="font-mono-cosmic text-[0.35rem] tracking-[0.15em] text-[#FFC300]/40 font-bold mt-3">80% OFF PRE-LANZAMIENTO</p>
         </section>
 
         {/* 2. GUARDIAN — Transición visual */}
         <section className="relative min-h-[50vh] flex flex-col items-center justify-center px-6">
-          <motion.div initial={{ opacity: 0, y: 15, filter: "blur(8px)" }} whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 2.5, delay: 0.3 }} className="text-center relative z-10 max-w-[320px]">
+          <RevealItem anim="cosmicFadeIn" dur={2.5} delay={0.3} className="text-center relative z-10 max-w-[320px]">
             <p className="font-display text-2xl sm:text-3xl font-black text-[#FFC300] golden-glow-strong">Domina la Mente Humana</p>
             <p className="font-body text-xs text-white/25 mt-3">Desliza para descubrir lo que te han ocultado</p>
-          </motion.div>
+          </RevealItem>
         </section>
 
         {/* 3. EXTRACTOS */}
         <section className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20">
-          <motion.div initial={{ opacity: 0, filter: "blur(6px)" }} whileInView={{ opacity: 1, filter: "blur(0px)" }} viewport={{ once: true }} transition={{ duration: 2 }} className="text-center mb-10 max-w-[340px]">
+          <RevealItem anim="cosmicFadeIn" dur={2} className="text-center mb-10 max-w-[340px]">
             <SectionTag text="CONTENIDO CLASIFICADO" />
             <h2 className="font-display text-2xl sm:text-3xl font-black text-white/80">Lo que vas a descubrir no se enseña <span className="text-[#FFC300] golden-glow-strong">en ninguna universidad</span></h2>
-          </motion.div>
+          </RevealItem>
           <div className="w-full max-w-[340px] mx-auto space-y-7">
             {[
               { quote: "Cuando alguien te halaga excesivamente en los primeros minutos de conocerte, no está siendo amable — está activando el principio de reciprocidad para que bajes la guardia.", cap: "Cap. 5 — Dominando la Mente Humana" },
               { quote: "Un líder inteligente no puede ni debe cumplir su palabra cuando tal cumplimiento se vuelve en su contra. Si todos los hombres fueran buenos, este precepto no sería válido...", cap: "Cap. 2 — El Poder Maquiavélico" },
               { quote: "La seducción no comienza con lo que dices, sino con lo que la otra persona cree que descubrió por sí misma sobre ti. El misterio calculado es tu arma más poderosa.", cap: "Cap. 6 — El Arte de la Seducción Psicológica" },
             ].map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: i * 0.25 }} className="border-l-2 border-[#FFC300]/15 pl-4">
+              <RevealItem key={i} delay={i * 0.25} dur={0.8} className="border-l-2 border-[#FFC300]/15 pl-4">
                 <p className="font-mono-cosmic text-[0.25rem] text-[#FFC300]/15 mb-1 tracking-[0.2em]">{"// EXTRACTO"}</p>
                 <p className="font-body text-xs text-white/40 italic leading-relaxed">&ldquo;{item.quote}&rdquo;</p>
                 <p className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/25 mt-2 tracking-[0.15em]">— {item.cap}</p>
-              </motion.div>
+              </RevealItem>
             ))}
           </div>
         </section>
 
         {/* 4. ARSENAL PSICOLÓGICO */}
         <section className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.5 }} className="text-center mb-8 max-w-[340px]">
+          <RevealItem className="text-center mb-8 max-w-[340px]">
             <SectionTag text="ARSENAL PSICOLÓGICO" />
             <h2 className="font-display text-2xl sm:text-3xl font-black text-white/80">10 capítulos. 8 leyes.</h2>
             <p className="font-display text-lg text-[#FFC300]/60 mt-1">Un arsenal psicológico completo.</p>
-          </motion.div>
+          </RevealItem>
           <div className="w-full max-w-[350px] mx-auto space-y-3">
             {[
               { icon: "👁️", text: "Las 8 Leyes del Comportamiento Humano — predice lo que cualquiera hará antes de que lo haga" },
@@ -438,23 +473,23 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
               { icon: "🔗", text: "Protegerte de relaciones tóxicas con ciencia" },
               { icon: "♟️", text: "El camino al poder absoluto — influencia sin fuerza" },
             ].map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }} className="flex items-start gap-3 py-2.5 border-b border-white/[0.03]">
+              <RevealItem key={i} delay={i * 0.1} dur={0.6} className="flex items-start gap-3 py-2.5 border-b border-white/[0.03]">
                 <span className="text-base flex-shrink-0 mt-0.5">{item.icon}</span>
                 <p className="font-body text-xs text-white/40 leading-relaxed">{item.text}</p>
-              </motion.div>
+              </RevealItem>
             ))}
           </div>
         </section>
 
         {/* 5. BONOS */}
         <section className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.5 }} className="text-center mb-6 max-w-[340px]">
+          <RevealItem className="text-center mb-6 max-w-[340px]">
             <SectionTag text="🎁 BONOS EXCLUSIVOS" />
             <h2 className="font-display text-xl sm:text-2xl font-black text-white/70">Además del libro, recibes estos <span className="text-[#FFC300] golden-glow-strong">4 manuales de poder</span></h2>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 2 }} className="mb-6 max-w-[340px]">
-            <img src="/cosmic/portadas.webp" alt="El Sabio Manipulador — Libro + 4 Bonos" loading="lazy" className="w-full rounded-sm" style={{ filter: "drop-shadow(0 0 30px rgba(255,195,0,0.12))" }} />
-          </motion.div>
+          </RevealItem>
+          <RevealItem anim="fadeInScale" dur={2} className="mb-6 max-w-[340px]">
+            <img src="/cosmic/portadas.webp" alt="El Sabio Manipulador — Libro + 4 Bonos" width={400} height={400} loading="lazy" className="w-full rounded-sm" style={{ filter: "drop-shadow(0 0 30px rgba(255,195,0,0.12))" }} />
+          </RevealItem>
           <div className="w-full max-w-[350px] mx-auto space-y-3">
             {[
               { id: "01", title: "Cómo Detectar Mentiras", subtitle: "Desenmascara el Engaño", value: "$29" },
@@ -462,7 +497,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
               { id: "03", title: "Gestos Corporales en la Seducción", subtitle: "Citas, Atracción y Manipulación", value: "$24" },
               { id: "04", title: "Activa el Poder de Tu Mente", subtitle: "Desbloquea tu Don Oculto", value: "$19" },
             ].map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.12 }} className="flex items-center justify-between py-3 px-3 border border-[#FFC300]/[0.04] rounded-sm bg-gradient-to-r from-[#FFC300]/[0.01] to-transparent">
+              <RevealItem key={i} delay={i * 0.12} dur={0.6} className="flex items-center justify-between py-3 px-3 border border-[#FFC300]/[0.04] rounded-sm bg-gradient-to-r from-[#FFC300]/[0.01] to-transparent">
                 <div className="flex items-center gap-3">
                   <span className="font-mono-cosmic text-[0.4rem] text-[#FFC300]/30 tracking-[0.2em]">BONO {item.id}</span>
                   <div>
@@ -474,20 +509,20 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                   <p className="font-mono-cosmic text-[0.35rem] text-white/15 line-through">~{item.value}</p>
                   <p className="font-mono-cosmic text-[0.4rem] text-[#FFC300]/60 font-bold">GRATIS</p>
                 </div>
-              </motion.div>
+              </RevealItem>
             ))}
           </div>
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.8 }} className="mt-5 text-center">
+          <RevealItem delay={0.8} dur={1} className="mt-5 text-center">
             <p className="font-mono-cosmic text-[0.4rem] tracking-[0.2em] text-white/15">Total en bonos: ~$91 → Incluidos <span className="text-[#FFC300]/50 font-bold">GRATIS</span> · <span className="text-[#FFC300]/40 font-bold">PRE-LANZAMIENTO 2026</span></p>
-          </motion.div>
+          </RevealItem>
         </section>
 
         {/* 6. EVIDENCIA */}
         <section className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.5 }} className="mb-8 text-center">
+          <RevealItem className="mb-8 text-center">
             <SectionTag text="EVIDENCIA" />
             <h2 className="font-display text-2xl sm:text-3xl font-black text-white/70">No es promesa.<br /><span className="text-[#FFC300] golden-glow-strong">Es evidencia.</span></h2>
-          </motion.div>
+          </RevealItem>
           <div className="w-full max-w-[340px] mx-auto">
             <div className="grid grid-cols-3 gap-4 mb-10">
               {[
@@ -495,10 +530,10 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                 { value: "4.8/5", label: "Valoración" },
                 { value: "97%", label: "Retención" },
               ].map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: i * 0.15 }} className="text-center">
+                <RevealItem key={i} delay={i * 0.15} dur={0.8} className="text-center">
                   <p className="font-display text-2xl sm:text-3xl font-black text-[#FFC300] golden-glow-strong">{item.value}</p>
                   <p className="font-body text-[0.6rem] text-white/30 mt-1 tracking-wide">{item.label}</p>
-                </motion.div>
+                </RevealItem>
               ))}
             </div>
             <div className="space-y-5">
@@ -510,10 +545,10 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                 { text: "Mi relación cambió completamente cuando aprendí a detectar los patrones de manipulación. Imprescindible.", author: "Despierta Ya — Chile" },
                 { text: "Lo compré por curiosidad y terminé devorándolo en una noche. Los bonos son increíblemente útiles.", author: "Estratega Digital — Perú" },
               ].map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }} className="border-l border-[#FFC300]/10 pl-4 py-2">
+                <RevealItem key={i} delay={i * 0.1} dur={0.6} className="border-l border-[#FFC300]/10 pl-4 py-2">
                   <p className="font-body text-xs text-white/35 italic leading-relaxed">&ldquo;{item.text}&rdquo;</p>
                   <p className="font-mono-cosmic text-[0.3rem] text-[#FFC300]/20 mt-1.5 tracking-[0.15em]">— {item.author}</p>
-                </motion.div>
+                </RevealItem>
               ))}
             </div>
           </div>
@@ -523,19 +558,18 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
         {/* 7. TWO OFFERS — SIDE BY SIDE           */}
         {/* ═══════════════════════════════════════ */}
         <section className="relative px-4 sm:px-6 py-20">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.5 }} className="text-center mb-8 max-w-[500px] mx-auto">
+          <RevealItem className="text-center mb-8 max-w-[500px] mx-auto">
             <SectionTag text="ELIGE TU ACCESO" />
             <h2 className="font-display text-2xl sm:text-3xl font-black text-white/80">Dos formas de <span className="text-[#FFC300] golden-glow-strong">cruzar el umbral</span></h2>
-          </motion.div>
+          </RevealItem>
 
           {/* Side by side grid */}
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
 
             {/* ─── OFFER 1: Basic $27 ─── */}
             <MagicSparkles>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
+              <RevealItem
+                dur={0.8}
                 className="w-full border border-[#FFC300]/[0.1] rounded-lg overflow-hidden"
                 style={{ background: "linear-gradient(180deg, rgba(255,195,0,0.03) 0%, rgba(5,5,5,0.95) 100%)" }}
               >
@@ -551,7 +585,7 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                 </div>
                 {/* Cover image */}
                 <div className="px-5 pt-4">
-                  <img src="/cosmic/pack-sabio.webp" alt="El Sabio Oscuro — Libro + 4 Bonos" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.1))" }} />
+                  <img src="/cosmic/pack-sabio.webp" alt="El Sabio Oscuro — Libro + 4 Bonos" width={400} height={500} loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.1))" }} />
                 </div>
                 {/* Features */}
                 <div className="py-4 px-5 space-y-2">
@@ -581,14 +615,13 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                     <CtaButton text="QUIERO ESTE →" href={CTA_BASIC} size="lg" sameWindow />
                   </div>
                 </div>
-              </motion.div>
+              </RevealItem>
             </MagicSparkles>
 
             {/* ─── OFFER 2: MEGAPACK $57 ─── */}
             <MagicSparkles>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.15 }}
+              <RevealItem
+                delay={0.15} dur={0.8}
                 className="w-full border-2 border-[#FFC300]/[0.3] rounded-lg overflow-hidden relative"
                 style={{ background: "linear-gradient(180deg, rgba(255,195,0,0.06) 0%, rgba(5,5,5,0.98) 100%)" }}
               >
@@ -611,15 +644,15 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                 <div className="px-4 pt-4 space-y-3">
                   <div>
                     <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 1 · EL SABIO OSCURO</p>
-                    <img src="/cosmic/pack-sabio.webp" alt="Pack 1 — El Sabio Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
+                    <img src="/cosmic/pack-sabio.webp" alt="Pack 1 — El Sabio Oscuro" width={400} height={500} loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
                   </div>
                   <div>
                     <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 2 · EL DOMADOR ENCANTADOR</p>
-                    <img src="/cosmic/pack-domador.webp" alt="Pack 2 — El Domador Encantador" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
+                    <img src="/cosmic/pack-domador.webp" alt="Pack 2 — El Domador Encantador" width={400} height={500} loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
                   </div>
                   <div>
                     <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/30 text-center mb-1.5">PACK 3 · JAQUE MATE OSCURO</p>
-                    <img src="/cosmic/pack-jaque-mate.webp" alt="Pack 3 — Jaque Mate Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
+                    <img src="/cosmic/pack-jaque-mate.webp" alt="Pack 3 — Jaque Mate Oscuro" width={400} height={500} loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 15px rgba(255,195,0,0.08))" }} />
                   </div>
                 </div>
                 {/* Features */}
@@ -649,48 +682,48 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
                     <CtaButton text="🔥 VER PACK COMPLETO →" onClick={onGoToPack} size="lg" />
                   </div>
                 </div>
-              </motion.div>
+              </RevealItem>
             </MagicSparkles>
           </div>
 
           {/* Launch pricing notice */}
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.5 }}
+          <RevealItem delay={0.5} dur={1}
             className="max-w-2xl mx-auto mt-6 border border-[#FFC300]/[0.08] rounded-sm p-4 text-center"
             style={{ background: "linear-gradient(135deg, rgba(255,195,0,0.02), rgba(5,5,5,0.9))" }}
           >
             <p className="font-mono-cosmic text-[0.4rem] tracking-[0.2em] text-[#FFC300]/40">⚠ ATENCIÓN</p>
             <p className="font-body text-xs text-white/35 mt-1.5">Este precio es de <span className="text-[#FFC300]/60 font-bold">lanzamiento</span> y puede subir en cualquier momento sin previo aviso.</p>
-          </motion.div>
+          </RevealItem>
         </section>
 
         {/* 8. GUARANTÍAS */}
         <section className="relative min-h-[60vh] flex flex-col items-center justify-center px-6 py-20">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.5 }} className="text-center mb-8">
+          <RevealItem className="text-center mb-8">
             <SectionTag text="GARANTÍAS" />
-          </motion.div>
+          </RevealItem>
           <div className="w-full max-w-[340px] mx-auto space-y-6">
             {[
               { num: "01", title: "Garantía Incondicional de 7 días", desc: "Si dentro de 7 días después de la inversión sientes que el material no es para ti, solo contacta al soporte y devolvemos el 100% de tu inversión.", highlight: "RIESGO CERO." },
               { num: "02", title: "Soporte Online", desc: "Resuelve tus dudas directamente con nuestro equipo.", highlight: "Acceso inmediato después del pago, desde cualquier dispositivo." },
             ].map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: i * 0.2 }} className="flex items-start gap-4">
+              <RevealItem key={i} delay={i * 0.2} dur={0.8} className="flex items-start gap-4">
                 <span className="font-mono-cosmic text-2xl font-black text-[#FFC300]/15 flex-shrink-0">{item.num}</span>
                 <div>
                   <p className="font-display text-sm font-bold text-white/60">{item.title}</p>
                   <p className="font-body text-xs text-white/30 leading-relaxed mt-1">{item.desc}</p>
                   <p className="font-body text-xs text-[#FFC300]/40 font-bold mt-1">{item.highlight}</p>
                 </div>
-              </motion.div>
+              </RevealItem>
             ))}
           </div>
         </section>
 
         {/* 8b. PARA QUIÉN NO ES */}
         <section className="relative flex flex-col items-center justify-center px-6 py-16">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.5 }} className="text-center mb-6 max-w-[340px]">
+          <RevealItem className="text-center mb-6 max-w-[340px]">
             <SectionTag text="PRE-FILTRO" />
             <h2 className="font-display text-xl sm:text-2xl font-black text-white/60">Esto <span className="text-red-400/80">NO es</span> para ti si...</h2>
-          </motion.div>
+          </RevealItem>
           <div className="w-full max-w-[350px] mx-auto space-y-3">
             {[
               { icon: "❌", text: "Buscas manipular y dañar a otros intencionalmente" },
@@ -698,23 +731,23 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
               { icon: "❌", text: "No estás dispuesto a cuestionar tus creencias" },
               { icon: "❌", text: "Esperas resultados sin leer ni practicar" },
             ].map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }} className="flex items-start gap-3 py-2.5 border-b border-white/[0.03]">
+              <RevealItem key={i} delay={i * 0.1} dur={0.5} className="flex items-start gap-3 py-2.5 border-b border-white/[0.03]">
                 <span className="text-sm flex-shrink-0 mt-0.5">{item.icon}</span>
                 <p className="font-body text-xs text-white/35 leading-relaxed">{item.text}</p>
-              </motion.div>
+              </RevealItem>
             ))}
           </div>
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.5 }} className="mt-5 text-center">
+          <RevealItem delay={0.5} dur={1} className="mt-5 text-center">
             <p className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-white/15">Si ninguna de esto te describe — este conocimiento <span className="text-[#FFC300]/50 font-bold">SÍ es para ti</span></p>
-          </motion.div>
+          </RevealItem>
         </section>
 
         {/* 9. FAQ */}
         <section className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.5 }} className="text-center mb-8 max-w-[340px]">
+          <RevealItem className="text-center mb-8 max-w-[340px]">
             <SectionTag text="DUDAS" />
             <h2 className="font-display text-2xl sm:text-3xl font-black text-white/60">Tienes preguntas<br /><span className="text-[#FFC300] golden-glow-strong">tenemos respuestas.</span></h2>
-          </motion.div>
+          </RevealItem>
           <div className="w-full max-w-[350px] mx-auto">
             <FaqItem q="¿Para quién es este libro?" a="Para cualquier persona que quiera entender cómo funciona la mente humana: vendedores, emprendedores, personas que quieren mejorar sus relaciones, o simplemente quienes sienten que siempre los manipulan y quieren cambiar eso." />
             <FaqItem q="¿En qué formato recibo el libro?" a="En formato digital (PDF/ePub). Acceso inmediato después del pago, desde cualquier dispositivo: celular, tablet o computadora." />
@@ -730,20 +763,20 @@ function MainPage({ onGoToPack }: { onGoToPack: () => void }) {
 
         {/* 10. FINAL CTA */}
         <section className="relative min-h-[80vh] flex flex-col items-center justify-center px-6 bg-gradient-to-b from-transparent via-[#050505]/60 to-[#050505] pb-24">
-          <motion.div initial={{ scale: 0, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 2 }}>
+          <RevealItem anim="fadeInScale" dur={2}>
             <GoldenSingularity size={30} intensity={0.3} variant="icon" />
-          </motion.div>
-          <motion.h2 initial={{ opacity: 0, y: 20, filter: "blur(8px)" }} whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }} viewport={{ once: true }} transition={{ duration: 2 }} className="font-display text-2xl sm:text-4xl font-black text-center mt-6 text-white/80">
+          </RevealItem>
+          <RevealItem anim="cosmicFadeIn" dur={2} className="font-display text-2xl sm:text-4xl font-black text-center mt-6 text-white/80">
             Tu vida cambia cuando <span className="text-[#FFC300] golden-glow-strong">decides ver</span>
-          </motion.h2>
-          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.5, delay: 0.5 }} className="font-body text-xs text-white/25 text-center mt-3 max-w-[300px]">
+          </RevealItem>
+          <RevealItem delay={0.5} dur={1.5} className="font-body text-xs text-white/25 text-center mt-3 max-w-[300px]">
             No dejes que otro día pase sin entender lo que realmente ocurre en cada conversación, decisión y relación de tu vida.
-          </motion.p>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, delay: 1 }} className="mt-8 space-y-3 flex flex-col items-center">
+          </RevealItem>
+          <RevealItem delay={1} dur={1} className="mt-8 space-y-3 flex flex-col items-center">
             <CtaButton text="🔓 DESBLOQUEAR ACCESO — $27 (80% OFF)" href={CTA_BASIC} size="lg" sameWindow />
             <CtaButton text="🔥 MEGAPACK COMPLETO — $57" onClick={onGoToPack} size="lg" />
-          </motion.div>
-          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1, delay: 1.5 }} className="font-mono-cosmic text-[0.3rem] tracking-[0.15em] text-[#FFC300]/30 text-center mt-2">Precio pre-lanzamiento 2026 · Sube pronto</motion.p>
+          </RevealItem>
+          <RevealItem delay={1.5} dur={1} className="font-mono-cosmic text-[0.3rem] tracking-[0.15em] text-[#FFC300]/30 text-center mt-2">Precio pre-lanzamiento 2026 · Sube pronto</RevealItem>
         </section>
 
         {/* FOOTER */}
@@ -763,45 +796,39 @@ function PackPage({ onBack }: { onBack: () => void }) {
   return (
     <>
       <CountdownTimer />
-      <CosmicCanvas />
-      <div className="fixed inset-0 z-[1] scanlines pointer-events-none" />
-      <div className="grain-overlay" />
-      <div className="scan-sweep" />
-      <div className="fixed inset-0 z-[2] pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgba(5,5,5,0.5) 80%, rgba(5,5,5,0.85) 100%)" }} />
 
       <main className="relative" style={{ paddingTop: "36px" }}>
 
         {/* BACK BUTTON */}
         <div className="sticky top-10 z-20 px-4 py-3">
-          <motion.button
+          <button
             onClick={onBack}
-            initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5 }}
             className="flex items-center gap-2 font-mono-cosmic text-[0.4rem] tracking-[0.2em] text-[#FFC300]/50 hover:text-[#FFC300] transition-colors"
+            style={{ animation: "fadeInUp 0.8s ease-out 0.5s both" }}
           >
             <span>←</span> VOLVER A OFERTAS
-          </motion.button>
+          </button>
         </div>
 
-        {/* HERO COMBO */}
+        {/* HERO COMBO — CSS animations replace motion.div */}
         <section className="relative min-h-[80vh] flex flex-col items-center justify-center px-6 py-20">
-          <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 2 }}>
+          <div style={{ animation: "fadeInScale 2s ease-out both" }}>
             <GoldenSingularity size={35} intensity={0.4} variant="icon" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 25, filter: "blur(10px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 3, delay: 0.5 }} className="text-center mt-8">
+          </div>
+          <div style={{ animation: "cosmicFadeIn 3s ease-out 0.5s both" }} className="text-center mt-8">
             <div className="inline-block px-3 py-1 rounded-sm border border-[#FFC300]/[0.15] mb-4">
               <span className="font-mono-cosmic text-[0.35rem] tracking-[0.2em] text-[#FFC300]/60">⭐ MÁS POPULAR · 3 PACKS EN 1</span>
             </div>
             <h1 className="font-display text-3xl sm:text-5xl font-black text-white/90">MEGAPACK</h1>
             <h1 className="font-display text-3xl sm:text-5xl font-black text-[#FFC300] golden-glow-strong mt-1">COMPLETO</h1>
             <p className="font-body text-sm text-white/30 mt-4 max-w-[350px] mx-auto">3 packs. 15 libros. Todo el conocimiento oscura que necesitas para dominar cualquier situación.</p>
-          </motion.div>
+          </div>
         </section>
 
         {/* 3 PACKS WITH COVERS */}
         <section className="px-4 sm:px-6 py-10">
           {/* PACK 1 */}
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+          <RevealItem dur={0.8}
             className="max-w-lg mx-auto mb-12 border border-[#FFC300]/[0.06] rounded-lg overflow-hidden"
             style={{ background: "linear-gradient(180deg, rgba(255,195,0,0.02) 0%, rgba(5,5,5,0.95) 100%)" }}
           >
@@ -814,7 +841,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
               <span className="font-mono-cosmic text-xs text-white/15 line-through">$128</span>
             </div>
             <div className="p-4">
-              <img src="/cosmic/pack-sabio.webp" alt="Pack 1 — El Sabio Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
+              <img src="/cosmic/pack-sabio.webp" alt="Pack 1 — El Sabio Oscuro" width={400} height={500} loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
             </div>
             <div className="px-5 pb-4 space-y-1.5">
               {PACK1_BOOKS.map((b, i) => (
@@ -830,10 +857,10 @@ function PackPage({ onBack }: { onBack: () => void }) {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </RevealItem>
 
           {/* PACK 2 */}
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+          <RevealItem dur={0.8}
             className="max-w-lg mx-auto mb-12 border border-[#FFC300]/[0.06] rounded-lg overflow-hidden"
             style={{ background: "linear-gradient(180deg, rgba(255,195,0,0.02) 0%, rgba(5,5,5,0.95) 100%)" }}
           >
@@ -846,7 +873,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
               <span className="font-mono-cosmic text-xs text-white/15 line-through">$133</span>
             </div>
             <div className="p-4">
-              <img src="/cosmic/pack-domador.webp" alt="Pack 2 — El Domador Encantador" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
+              <img src="/cosmic/pack-domador.webp" alt="Pack 2 — El Domador Encantador" width={400} height={500} loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
             </div>
             <div className="px-5 pb-4 space-y-1.5">
               {PACK2_BOOKS.map((b, i) => (
@@ -862,10 +889,10 @@ function PackPage({ onBack }: { onBack: () => void }) {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </RevealItem>
 
           {/* PACK 3 */}
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+          <RevealItem dur={0.8}
             className="max-w-lg mx-auto mb-12 border border-[#FFC300]/[0.06] rounded-lg overflow-hidden"
             style={{ background: "linear-gradient(180deg, rgba(255,195,0,0.02) 0%, rgba(5,5,5,0.95) 100%)" }}
           >
@@ -878,7 +905,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
               <span className="font-mono-cosmic text-xs text-white/15 line-through">$133</span>
             </div>
             <div className="p-4">
-              <img src="/cosmic/pack-jaque-mate.webp" alt="Pack 3 — Jaque Mate Oscuro" loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
+              <img src="/cosmic/pack-jaque-mate.webp" alt="Pack 3 — Jaque Mate Oscuro" width={400} height={500} loading="lazy" className="w-full rounded" style={{ filter: "drop-shadow(0 0 20px rgba(255,195,0,0.08))" }} />
             </div>
             <div className="px-5 pb-4 space-y-1.5">
               {PACK3_BOOKS.map((b, i) => (
@@ -894,7 +921,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </RevealItem>
         </section>
 
         {/* PRICE SUMMARY */}
@@ -950,7 +977,7 @@ function PackPage({ onBack }: { onBack: () => void }) {
               { icon: "⚡", title: "Acceso Inmediato", desc: "Después del pago recibes acceso instantáneo a los 15 libros desde cualquier dispositivo." },
               { icon: "💬", title: "Soporte Online", desc: "Resuelve tus dudas directamente con nuestro equipo en cualquier momento." },
             ].map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: i * 0.15 }}
+              <RevealItem key={i} delay={i * 0.15} dur={0.8}
                 className="flex items-start gap-4 p-4 border border-[#FFC300]/[0.04] rounded-sm"
               >
                 <span className="text-2xl flex-shrink-0">{item.icon}</span>
@@ -958,29 +985,29 @@ function PackPage({ onBack }: { onBack: () => void }) {
                   <p className="font-display text-sm font-bold text-white/60">{item.title}</p>
                   <p className="font-body text-xs text-white/30 leading-relaxed mt-1">{item.desc}</p>
                 </div>
-              </motion.div>
+              </RevealItem>
             ))}
           </div>
         </section>
 
         {/* FINAL CTA PACK */}
         <section className="min-h-[60vh] flex flex-col items-center justify-center px-6 bg-gradient-to-b from-transparent via-[#050505]/60 to-[#050505] pb-24">
-          <motion.div initial={{ scale: 0, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 2 }}>
+          <RevealItem anim="fadeInScale" dur={2}>
             <GoldenSingularity size={25} intensity={0.3} variant="icon" />
-          </motion.div>
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 2 }}
+          </RevealItem>
+          <RevealItem dur={2}
             className="font-display text-2xl sm:text-4xl font-black text-center mt-6 text-white/80"
           >
             15 libros. <span className="text-[#FFC300] golden-glow-strong">Un precio.</span>
-          </motion.h2>
-          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.5, delay: 0.5 }}
+          </RevealItem>
+          <RevealItem delay={0.5} dur={1.5}
             className="font-body text-xs text-white/25 text-center mt-3 max-w-[300px]"
           >
             No dejes pasar esta oportunidad. El precio de lanzamiento puede subir en cualquier momento.
-          </motion.p>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, delay: 1 }} className="mt-8">
+          </RevealItem>
+          <RevealItem delay={1} dur={1} className="mt-8">
             <CtaButton text="🔥 COMPRAR MEGAPACK — $57 USD" href={CTA_PACK} size="lg" sameWindow />
-          </motion.div>
+          </RevealItem>
         </section>
 
         {/* FOOTER */}
@@ -1011,6 +1038,13 @@ export default function ElUmbral() {
 
   return (
     <div className="min-h-screen bg-[#050505]">
+      {/* Shared background layer — rendered once */}
+      <CosmicCanvas />
+      <div className="fixed inset-0 z-[1] scanlines pointer-events-none" />
+      <div className="grain-overlay" />
+      <div className="scan-sweep" />
+      <div className="fixed inset-0 z-[2] pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgba(5,5,5,0.5) 80%, rgba(5,5,5,0.85) 100%)" }} />
+
       <AnimatePresence mode="wait">
         {page === "main" ? (
           <motion.div key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>

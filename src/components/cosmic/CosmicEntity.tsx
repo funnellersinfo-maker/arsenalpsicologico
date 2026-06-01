@@ -28,7 +28,7 @@ export default function CosmicEntity({
       />
 
       {/* ── ORBITAL RING 1 (outermost) ── */}
-      <motion.div
+      <div
         className="absolute rounded-full border pointer-events-none"
         style={{
           inset: -size * 0.18,
@@ -42,7 +42,7 @@ export default function CosmicEntity({
           className="absolute -top-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-[#FFC300]"
           style={{ boxShadow: "0 0 12px rgba(255,195,0,0.7), 0 0 30px rgba(255,195,0,0.25)" }}
         />
-      </motion.div>
+      </div>
 
       {/* ── ORBITAL RING 2 ── */}
       <div
@@ -107,11 +107,16 @@ export default function CosmicEntity({
 
       {/* ── MAIN IMAGE ── */}
       <img
-        src="/cosmic/sabio-figure.png"
+        src="/cosmic/sabio-figure.webp"
         alt="El Sabio Oscuro — Figura Cósmica"
-        loading="lazy"
+        width={200}
+        height={270}
+        loading="eager"
+        fetchPriority="high"
         className="relative z-10 w-full h-full object-contain"
         style={{
+          width: size,
+          height: Math.round(size * 1.35),
           filter: `drop-shadow(0 0 ${50 * intensity}px rgba(255,195,0,${0.15 * intensity})) drop-shadow(0 0 ${100 * intensity}px rgba(255,195,0,${0.06 * intensity}))`,
           animation: "entityBreathe 5s ease-in-out infinite",
         }}
@@ -186,13 +191,12 @@ export default function CosmicEntity({
       ))}
 
       {/* ── INTERNAL ENERGY FLOW ── */}
-      <motion.div
+      <div
         className="absolute inset-0 z-[15] pointer-events-none"
         style={{
           background: `conic-gradient(from 0deg at 50% 35%, transparent 0%, rgba(255,195,0,${0.02 * intensity}) 10%, transparent 20%, rgba(255,216,77,${0.015 * intensity}) 35%, transparent 50%)`,
+          animation: "singularitySpin 25s linear infinite",
         }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
       />
     </div>
   );

@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 type SingularityVariant = "loader" | "portal" | "meter" | "cta" | "icon";
 
 interface GoldenSingularityProps {
@@ -182,20 +180,12 @@ export default function GoldenSingularity({
 
       {/* ── INTERNAL LIGHT (portal/cta) ── */}
       {(variant === "portal" || variant === "cta") && (
-        <motion.div
+        <div
           className="absolute rounded-full pointer-events-none"
           style={{
             inset: size * 0.25,
             background: "radial-gradient(circle, rgba(255,216,77,0.08) 0%, transparent 70%)",
-          }}
-          animate={{
-            opacity: [0.3, 0.7, 0.3],
-            scale: [0.95, 1.05, 0.95],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
+            animation: "pulseGlow 4s ease-in-out infinite",
           }}
         />
       )}

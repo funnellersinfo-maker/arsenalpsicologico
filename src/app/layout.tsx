@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display, JetBrains_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,6 +12,30 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
+});
+
+const playfairDisplay = Playfair_Display({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "700", "800", "900"],
+  display: "swap",
+  preload: true,
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono-cosmic",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+  preload: true,
+});
+
+const inter = Inter({
+  variable: "--font-body",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -31,7 +55,7 @@ export const metadata: Metadata = {
     "arsenal psicológico",
   ],
   icons: {
-    icon: "/cosmic/singularity.png",
+    icon: "/cosmic/singularity.webp",
   },
   openGraph: {
     title: "Arsenal Psicológico — 15 Libros de Psicología Oscura",
@@ -63,23 +87,16 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-          media="print"
-          onLoad="this.media='all'"
-        />
-        {/* Meta Pixel Code — deferred for performance */}
+        <meta name="theme-color" content="#050505" />
+        <meta name="color-scheme" content="dark" />
+        <link rel="preconnect" href="https://go.hotmart.com" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
+        <link rel="dns-prefetch" href="https://wa.link" />
+        {/* Meta Pixel Code — optimized with requestIdleCallback */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
-window.addEventListener('load',function(){
+requestIdleCallback(function(){
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -106,7 +123,7 @@ fbq('track', 'PageView');
         {/* End Meta Pixel Code */}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#050505] text-white overflow-x-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} ${jetbrainsMono.variable} ${inter.variable} antialiased bg-[#050505] text-white overflow-x-hidden`}
       >
         {children}
       </body>

@@ -93,13 +93,13 @@
 
 @layer utilities {
   .font-display {
-    font-family: "Playfair Display", serif;
+    font-family: var(--font-display), serif;
   }
   .font-mono-cosmic {
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono-cosmic), monospace;
   }
   .font-body {
-    font-family: "Inter", sans-serif;
+    font-family: var(--font-body), sans-serif;
   }
 }
 
@@ -235,6 +235,34 @@
   50% { opacity: 0.85; }
 }
 
+/* ── Performance-optimized Keyframes ── */
+@keyframes sparkleFloat {
+  0% { transform: translateY(0) scale(0); opacity: 0; }
+  40% { transform: translateY(-30px) scale(1.2); opacity: 1; }
+  100% { transform: translateY(-60px) scale(0); opacity: 0; }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInScale {
+  0% { opacity: 0; transform: scale(0.2); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── CTA Button ── */
+.cta-btn { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.cta-btn:hover { transform: scale(1.04); box-shadow: 0 0 55px rgba(255,195,0,0.3); }
+.cta-btn:active { transform: scale(0.97); }
+
 /* ── Selection ── */
 ::selection {
   background: rgba(255, 195, 0, 0.15);
@@ -245,9 +273,9 @@
 @media (max-width: 768px) {
   ::-webkit-scrollbar { width: 0; display: none; }
   * { scrollbar-width: none; }
+  .grain-overlay { display: none; }
+  .scan-sweep { animation-duration: 20s; }
 }
 @media (hover: none) {
   .holo-shimmer { animation: none; }
 }
-
-html { scroll-behavior: smooth; }
