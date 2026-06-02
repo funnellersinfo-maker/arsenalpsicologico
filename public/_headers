@@ -1,0 +1,22 @@
+# Aggressive browser caching for static assets
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Font files — cache for 1 year
+/_next/static/media/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images — cache for 30 days
+/cosmic/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# HTML pages — short cache, revalidate
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Security headers for all pages
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

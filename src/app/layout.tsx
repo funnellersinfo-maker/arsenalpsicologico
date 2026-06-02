@@ -89,13 +89,18 @@ export default function RootLayout({
       <head>
         <meta name="theme-color" content="#050505" />
         <meta name="color-scheme" content="dark" />
+        {/* Critical preconnect hints — resolve DNS/TCP before needed */}
         <link rel="preconnect" href="https://go.hotmart.com" />
-        <link rel="dns-prefetch" href="https://connect.facebook.net" />
+        <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://wa.link" />
-        {/* Meta Pixel Code — optimized with requestIdleCallback */}
+        <link rel="dns-prefetch" href="https://www.facebook.com" />
+        {/* Preload hero image for instant FCP */}
+        <link rel="preload" as="image" href="/cosmic/sabio-figure.webp" type="image/webp" />
+        {/* Meta Pixel Code — fully deferred, never blocks render */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
+window.addEventListener('load',function(){
 requestIdleCallback(function(){
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -107,6 +112,7 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1794258984886814');
 fbq('track', 'PageView');
+});
 });
 `,
           }}

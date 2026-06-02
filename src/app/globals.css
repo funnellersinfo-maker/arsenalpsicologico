@@ -269,12 +269,23 @@
   color: #FFC300;
 }
 
+/* ── Performance hints for animated elements ── */
+.cosmic-canvas,
+.scan-sweep,
+.grain-overlay::before {
+  will-change: transform;
+}
+.grain-overlay::before {
+  contain: layout style;
+}
+
 /* ── Mobile Immersion ── */
 @media (max-width: 768px) {
   ::-webkit-scrollbar { width: 0; display: none; }
   * { scrollbar-width: none; }
   .grain-overlay { display: none; }
   .scan-sweep { animation-duration: 20s; }
+  .scanlines { display: none; }
 }
 @media (hover: none) {
   .holo-shimmer { animation: none; }

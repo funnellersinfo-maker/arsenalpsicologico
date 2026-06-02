@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 interface CosmicEntityProps {
   size?: number;
   intensity?: number;
@@ -152,40 +150,26 @@ export default function CosmicEntity({
         />
       </div>
 
-      {/* ── SCATTERED ORBITING PARTICLES ── */}
+      {/* ── SCATTERED ORBITING PARTICLES — CSS only, no framer-motion ── */}
       {[
-        { angle: 30, dist: 0.48, speed: 18, size: 2.5, color: "#FFC300" },
-        { angle: 140, dist: 0.52, speed: 14, size: 2, color: "#FFD84D" },
-        { angle: 210, dist: 0.44, speed: 22, size: 1.5, color: "#FFC300" },
-        { angle: 320, dist: 0.55, speed: 16, size: 2, color: "#FFB800" },
-        { angle: 80, dist: 0.38, speed: 12, size: 1.5, color: "#FFD84D" },
-        { angle: 260, dist: 0.5, speed: 20, size: 1.8, color: "#FFC300" },
+        { angle: 30, dist: 0.48, speed: 18, pSize: 2.5, color: "#FFC300", delay: 0 },
+        { angle: 140, dist: 0.52, speed: 14, pSize: 2, color: "#FFD84D", delay: -3 },
+        { angle: 210, dist: 0.44, speed: 22, pSize: 1.5, color: "#FFC300", delay: -7 },
+        { angle: 320, dist: 0.55, speed: 16, pSize: 2, color: "#FFB800", delay: -5 },
+        { angle: 80, dist: 0.38, speed: 12, pSize: 1.5, color: "#FFD84D", delay: -2 },
+        { angle: 260, dist: 0.5, speed: 20, pSize: 1.8, color: "#FFC300", delay: -9 },
       ].map((orb, i) => (
-        <motion.div
+        <div
           key={i}
           className="absolute rounded-full pointer-events-none z-20"
           style={{
-            width: orb.size,
-            height: orb.size,
+            width: orb.pSize,
+            height: orb.pSize,
             background: orb.color,
-            boxShadow: `0 0 ${orb.size * 3}px ${orb.color}66, 0 0 ${orb.size * 6}px ${orb.color}22`,
-          }}
-          animate={{
-            x: [
-              Math.cos((orb.angle * Math.PI) / 180) * size * orb.dist,
-              Math.cos(((orb.angle + 360) * Math.PI) / 180) * size * orb.dist,
-            ],
-            y: [
-              Math.sin((orb.angle * Math.PI) / 180) * size * orb.dist * 0.7,
-              Math.sin(((orb.angle + 360) * Math.PI) / 180) * size * orb.dist * 0.7,
-            ],
-            opacity: [0.3, 0.8, 0.3],
-          }}
-          transition={{
-            duration: orb.speed,
-            repeat: Infinity,
-            ease: "linear",
-            opacity: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+            boxShadow: `0 0 ${orb.pSize * 3}px ${orb.color}66, 0 0 ${orb.pSize * 6}px ${orb.color}22`,
+            left: "50%",
+            top: "35%",
+            animation: `orbFloat${i} ${orb.speed}s linear infinite ${orb.delay}s`,
           }}
         />
       ))}
@@ -198,6 +182,16 @@ export default function CosmicEntity({
           animation: "singularitySpin 25s linear infinite",
         }}
       />
+
+      {/* ── Inline keyframes for orbital particles (CSS-only) ── */}
+      <style>{`
+        @keyframes orbFloat0 { 0%{transform:translate(${Math.cos(30*Math.PI/180)*size*0.48}px,${Math.sin(30*Math.PI/180)*size*0.48*0.7}px)} 50%{opacity:0.8} 100%{transform:translate(${Math.cos(390*Math.PI/180)*size*0.48}px,${Math.sin(390*Math.PI/180)*size*0.48*0.7}px)} }
+        @keyframes orbFloat1 { 0%{transform:translate(${Math.cos(140*Math.PI/180)*size*0.52}px,${Math.sin(140*Math.PI/180)*size*0.52*0.7}px)} 50%{opacity:0.8} 100%{transform:translate(${Math.cos(500*Math.PI/180)*size*0.52}px,${Math.sin(500*Math.PI/180)*size*0.52*0.7}px)} }
+        @keyframes orbFloat2 { 0%{transform:translate(${Math.cos(210*Math.PI/180)*size*0.44}px,${Math.sin(210*Math.PI/180)*size*0.44*0.7}px)} 50%{opacity:0.8} 100%{transform:translate(${Math.cos(570*Math.PI/180)*size*0.44}px,${Math.sin(570*Math.PI/180)*size*0.44*0.7}px)} }
+        @keyframes orbFloat3 { 0%{transform:translate(${Math.cos(320*Math.PI/180)*size*0.55}px,${Math.sin(320*Math.PI/180)*size*0.55*0.7}px)} 50%{opacity:0.8} 100%{transform:translate(${Math.cos(680*Math.PI/180)*size*0.55}px,${Math.sin(680*Math.PI/180)*size*0.55*0.7}px)} }
+        @keyframes orbFloat4 { 0%{transform:translate(${Math.cos(80*Math.PI/180)*size*0.38}px,${Math.sin(80*Math.PI/180)*size*0.38*0.7}px)} 50%{opacity:0.8} 100%{transform:translate(${Math.cos(440*Math.PI/180)*size*0.38}px,${Math.sin(440*Math.PI/180)*size*0.38*0.7}px)} }
+        @keyframes orbFloat5 { 0%{transform:translate(${Math.cos(260*Math.PI/180)*size*0.5}px,${Math.sin(260*Math.PI/180)*size*0.5*0.7}px)} 50%{opacity:0.8} 100%{transform:translate(${Math.cos(620*Math.PI/180)*size*0.5}px,${Math.sin(620*Math.PI/180)*size*0.5*0.7}px)} }
+      `}</style>
     </div>
   );
 }
